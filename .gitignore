@@ -226,3 +226,5 @@ portlets/LiferayJSONWebservices-portlet.rar
 portlets/LiferayJSONWebservices-portlet/
 
 portlets/opencps-portlet/*.log
+
+portlets/alpacajs-portlet/
