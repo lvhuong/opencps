@@ -40,9 +40,6 @@
 								<aui:option value="-1">
 									<liferay-ui:message key="all-status"></liferay-ui:message>
 								</aui:option>
-								<aui:option value="<%= PaymentMgtUtil.PAYMENT_STATUS_ON_PROCESSING %>">
-									<liferay-ui:message key="on-processing"></liferay-ui:message>
-								</aui:option>
 								<aui:option value="<%= PaymentMgtUtil.PAYMENT_STATUS_REQUESTED %>">
 									<liferay-ui:message key="requested"></liferay-ui:message>
 								</aui:option>

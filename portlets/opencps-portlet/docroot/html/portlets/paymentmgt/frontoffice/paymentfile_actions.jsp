@@ -73,11 +73,12 @@
 <liferay-ui:icon image="view" cssClass="view" message="view"
 	url="<%=viewPaymentDetail.toString()%>" />
 
-<c:if test="<%= paymentStatus == 0 %>">
-	<liferay-ui:icon image="key" cssClass="view" message="keypay-transaction"
-		url="<%=paymentFile.getKeypayUrl()%>" />
-	
-	<liferay-ui:icon image="post" cssClass="view" message="bank-transaction"
-		url="<%=bankTransaction.toString()%>" />	
+<c:if test="<%= paymentStatus == PaymentMgtUtil.PAYMENT_STATUS_REQUESTED || paymentStatus == PaymentMgtUtil.PAYMENT_STATUS_ON_PROCESSING
+|| paymentStatus == PaymentMgtUtil.PAYMENT_STATUS_REJECTED%>">
+    <liferay-ui:icon image="key" cssClass="view" message="keypay-transaction"
+        url="<%=paymentFile.getKeypayUrl()%>" />
+    
+    <liferay-ui:icon image="post" cssClass="view" message="bank-transaction"
+        url="<%=bankTransaction.toString()%>" />    
 </c:if>
-	
+    

@@ -73,4 +73,5 @@ public class MessageKeys {
 	public static final String PAYMENT_FILE_CONFIRM_BANK_SUCCESS = "payment.file.confirm.bank.success";
 	public static final String PAYMENT_FILE_CONFIRM_CASH_SUCCESS = "payment.file.confirm.cash.success";
 	public static final String PAYMENT_FILE_CONFIRM_CASH_ERROR = "payment.file.confirm.cash.error";
+	public static final String PAYMENT_FILE_CONFIRM_BANK_ERROR = "payment.file.confirm.bank.error";
 }

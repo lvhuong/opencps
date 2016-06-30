@@ -27,7 +27,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 %>
-<%@ include file="/init.jsp"%>
+<%@ include file="init.jsp"%>
 <%@page import="org.opencps.util.WebKeys"%>
 <%@page import="org.opencps.servicemgt.model.ServiceInfo"%>
 <%
@@ -35,7 +35,16 @@
 	String backURL = ParamUtil.getString(request, "backURL");
 	String onlineURL = ParamUtil.getString(request, "onlineURL");
 	long serviceinfoId = ParamUtil.getLong(request, "serviceinfoId");
+	
+	long plidServiceDetailRes = 0;
+	
 	long directServicePlid = PortalUtil.getPlidFromPortletId(scopeGroupId, true,  WebKeys.SERVICE_MGT_DIRECTORY);
+	
+	if(Long.valueOf(plidServiceDetail) == 0) {
+		plidServiceDetailRes = directServicePlid;
+	} else {
+		plidServiceDetailRes = Long.valueOf(plidServiceDetail);
+	}
 	ServiceInfo serviceInfo = null;
 	ServiceConfig serviceConfig = null;
 	DictCollection collection = null;
@@ -65,7 +74,7 @@
 <liferay-portlet:renderURL 
 		var="detailServiceURL" 
 		portletName="<%=WebKeys.SERVICE_MGT_DIRECTORY %>"
-		plid="<%=directServicePlid %>"
+		plid="<%=plidServiceDetailRes %>"
 		portletMode="VIEW"
 	>
 		<portlet:param name="mvcPath" value="/html/portlets/servicemgt/directory/service_detail.jsp"/>

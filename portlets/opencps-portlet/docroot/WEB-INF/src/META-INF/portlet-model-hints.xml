@@ -683,5 +683,6 @@
 		<field name="invoiceTemplateNo" type="String" />
 		<field name="invoiceIssueNo" type="String" />
 		<field name="invoiceNo" type="String" />
+		<field name="syncStatus" type="int" />
 	</model>
 </model-hints>

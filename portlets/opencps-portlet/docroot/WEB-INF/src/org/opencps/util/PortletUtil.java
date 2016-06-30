@@ -745,10 +745,7 @@ public class PortletUtil {
 		String statusLabel = StringPool.BLANK;
 
 		switch (value) {
-		case PaymentMgtUtil.PAYMENT_STATUS_ON_PROCESSING:
-			statusLabel = LanguageUtil
-				.get(locale, "on-processing");
-			break;
+
 		case PaymentMgtUtil.PAYMENT_STATUS_REQUESTED:
 			statusLabel = LanguageUtil
 				.get(locale, "requested");

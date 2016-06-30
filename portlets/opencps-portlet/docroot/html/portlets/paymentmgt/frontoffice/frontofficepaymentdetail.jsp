@@ -162,9 +162,6 @@
 			<tr>
 				<td class="col-left"><liferay-ui:message key="payment-status-detail"></liferay-ui:message></td>
 				<td class="col-right">
-					<c:if test="<%= paymentFile.getPaymentStatus() == PaymentMgtUtil.PAYMENT_STATUS_ON_PROCESSING %>">
-						<liferay-ui:message key="on-processing"></liferay-ui:message>
-					</c:if>
 					<c:if test="<%= paymentFile.getPaymentStatus() == PaymentMgtUtil.PAYMENT_STATUS_REQUESTED %>">
 						<liferay-ui:message key="requested"></liferay-ui:message>
 					</c:if>

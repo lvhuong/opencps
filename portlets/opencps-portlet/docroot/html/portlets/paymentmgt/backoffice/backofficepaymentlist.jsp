@@ -83,7 +83,7 @@
 				
 			}else{
 				try {
-					dossierFiles = PaymentFileLocalServiceUtil.getPaymentFiles(-1, -1);
+					dossierFiles = PaymentFileLocalServiceUtil.getPaymentFiles(searchContainer.getStart(), searchContainer.getEnd());
 					totalCount = PaymentFileLocalServiceUtil.getPaymentFilesCount();
 				} catch(Exception e){
 					_log.error(e);
@@ -132,8 +132,12 @@
 				row.addText(String.valueOf(NumberFormat.getInstance(new Locale("vi", "VN")).format(paymentFile.getAmount())));	
 				
 				row.addText(LanguageUtil.get(pageContext, PortletUtil.getPaymentStatusLabel(paymentFile.getPaymentStatus(), locale)));	
+				if(paymentFile.getPaymentStatus() == 3){
+					row.addText(LanguageUtil.get(pageContext, PortletUtil.getPaymentMethodLabel(paymentFile.getPaymentMethod(), locale))); 
+				}else{
+					row.addText(""); 
+				}
 				
-				row.addText(LanguageUtil.get(locale, PaymentMgtUtil.getPaymentMethod(paymentFile.getPaymentFileId())));	
 				
 				row.addJSP("center", SearchEntry.DEFAULT_VALIGN, templatePath + "payment_actions.jsp", config.getServletContext(), request, response);
 			%>	

@@ -49,9 +49,10 @@
  */
 %>
 <%@ include file="../init.jsp"%>
+
 <liferay-util:include page="/html/portlets/paymentmgt/frontoffice/toolbar.jsp" servletContext="<%=application %>" />
 <%
-	int paymentStatus = ParamUtil.getInteger(request, "paymentStatus");
+	int paymentStatus = ParamUtil.getInteger(request, "paymentStatus", -1);
 	PortletURL iteratorURL = renderResponse.createRenderURL();
 	iteratorURL.setParameter("mvcPath", templatePath + "frontofficepaymentlist.jsp");
 %>
@@ -122,10 +123,17 @@
 					row.addText(Validator.isNotNull(dossier) ? dossier.getReceptionNo() : "");
 					
 					//gov agency name column
+					/*
 					row.addText(PaymentMgtUtil.getOwnerPayment(
 					    paymentFile.getOwnerUserId(),
 					    paymentFile.getOwnerOrganizationId()));
-
+					*/
+					if (dossier != null && dossier.getGovAgencyName() != null) {
+						row.addText(dossier.getGovAgencyName());
+					}
+					else {
+						row.addText(StringPool.BLANK);
+					}
 						//payment name column
 						row.addText(paymentFile.getPaymentName());
 
@@ -136,10 +144,6 @@
 						// payment status column
 						String paymentStatusText = "";
 						switch (paymentFile.getPaymentStatus()) {
-						case PaymentMgtUtil.PAYMENT_STATUS_ON_PROCESSING:
-							paymentStatusText =
-							    LanguageUtil.get(pageContext, "on-processing");
-							break;
 						case PaymentMgtUtil.PAYMENT_STATUS_REQUESTED:
 							paymentStatusText =
 							    LanguageUtil.get(pageContext, "requested");
@@ -157,7 +161,7 @@
 							    LanguageUtil.get(pageContext, "rejected");
 							break;
 						default:
-							paymentStatusText = "";
+							paymentStatusText =  LanguageUtil.get(pageContext, "requested");
 							break;
 						}
 

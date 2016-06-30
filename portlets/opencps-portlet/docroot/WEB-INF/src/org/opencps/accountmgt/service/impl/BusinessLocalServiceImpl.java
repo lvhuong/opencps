@@ -32,6 +32,7 @@ import org.opencps.util.DateTimeUtil;
 import org.opencps.util.PortletConstants;
 import org.opencps.util.PortletPropsValues;
 import org.opencps.util.PortletUtil;
+import org.opencps.util.WebKeys;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -41,6 +42,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Address;
@@ -97,6 +99,15 @@ public class BusinessLocalServiceImpl extends BusinessLocalServiceBaseImpl {
 	    String title, InputStream inputStream, long size,
 	    ServiceContext serviceContext)
 	    throws SystemException, PortalException {
+		
+		Role roleDefault = null;
+		
+		try {
+			roleDefault = RoleLocalServiceUtil
+				.getRole(serviceContext.getCompanyId(), WebKeys.CITIZEN_BUSINESS_ROLE_NAME);
+		} catch (Exception e) {
+			_log.info("ROLE CITIZEN IS NULL");
+		}
 
 		long businessId = counterLocalService
 		    .increment(Business.class
@@ -122,7 +133,12 @@ public class BusinessLocalServiceImpl extends BusinessLocalServiceBaseImpl {
 		String password1 = null;
 		String password2 = null;
 		String screenName = null;
-
+		
+		//add default role
+		if(Validator.isNotNull(roleDefault)) {
+			roleIds = new long[]{roleDefault.getRoleId()};
+		}
+		
 		UserGroup userGroup = null;
 		try {
 			userGroup = UserGroupLocalServiceUtil

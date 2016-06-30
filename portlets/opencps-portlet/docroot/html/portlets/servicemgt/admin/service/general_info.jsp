@@ -29,6 +29,14 @@
 	long serviceInfoId = (serviceInfo != null) ? serviceInfo.getServiceinfoId() : 0L;
 	long submitOnlinePlid = PortalUtil.getPlidFromPortletId(scopeGroupId, true,  WebKeys.P26_SUBMIT_ONLINE);
 	
+	long plidResLong = 0;
+	
+	if(Long.valueOf(plidRes) ==0) {
+		plidResLong = submitOnlinePlid;
+	} else {
+		plidResLong = Long.valueOf(plidRes);
+	}
+	
 	ServiceConfig serviceConfig = null;
 	
 	try {
@@ -41,7 +49,7 @@
 <liferay-portlet:renderURL 
 		var="servieOnlinePopURL" 
 		portletName="<%=WebKeys.P26_SUBMIT_ONLINE %>"
-		plid="<%=submitOnlinePlid %>"
+		plid="<%=plidResLong %>"
 		portletMode="VIEW"
 	>
 		<portlet:param name="mvcPath" value="/html/portlets/dossiermgt/submit/dossier_submit_online.jsp"/>

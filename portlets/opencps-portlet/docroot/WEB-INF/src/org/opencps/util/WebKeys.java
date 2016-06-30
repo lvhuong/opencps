@@ -194,4 +194,5 @@ public class WebKeys implements com.liferay.portal.kernel.util.WebKeys {
 	public static final String AUTO_EVENT_WEEKLY = "weekly";
 	
 	public static final String EMPLOYEE_ROLE_NAME = "OCPS_EMPLOYE";
+	public static final String CITIZEN_BUSINESS_ROLE_NAME = "OCPS_CITIZEN";
 }

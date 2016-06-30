@@ -262,4 +262,7 @@ public class PaymentFileLocalServiceImpl extends PaymentFileLocalServiceBaseImpl
 
 	}
 
+	public List<PaymentFile> getPaymentFileByD_(long dossierId) throws SystemException {
+		return paymentFilePersistence.findByD_(dossierId);
+	}
 }

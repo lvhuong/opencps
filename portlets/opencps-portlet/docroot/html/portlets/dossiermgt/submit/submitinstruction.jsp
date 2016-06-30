@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 %>
-<%@ include file="/init.jsp"%>
+<%@ include file="init.jsp"%>
 <%@page import="org.opencps.dossiermgt.service.ServiceConfigLocalServiceUtil"%>
 <%@page import="org.opencps.dossiermgt.model.ServiceConfig"%>
 <%@page import="org.opencps.util.DictItemUtil"%>

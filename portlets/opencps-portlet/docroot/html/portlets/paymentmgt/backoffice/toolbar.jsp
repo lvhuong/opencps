@@ -37,9 +37,6 @@
 					<aui:row>
 						<aui:col width="35">
 							<aui:select name="paymentStatus" label="">
-								<aui:option value="<%= PaymentMgtUtil.PAYMENT_STATUS_ON_PROCESSING %>">
-									<liferay-ui:message key="on-processing"></liferay-ui:message>
-								</aui:option>
 								<aui:option value="<%= PaymentMgtUtil.PAYMENT_STATUS_REQUESTED %>">
 									<liferay-ui:message key="requested"></liferay-ui:message>
 								</aui:option>

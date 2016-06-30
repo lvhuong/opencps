@@ -129,25 +129,25 @@ public class PaymentMgtBackOfficePortlet extends MVCPortlet {
 				PaymentFileLocalServiceUtil.updatePaymentFile(paymentFile);
 				SessionMessages.add(
 					    actionRequest,
-					    MessageKeys.PAYMENT_FILE_CONFIRM_CASH_SUCCESS);				
+					    MessageKeys.PAYMENT_FILE_CONFIRM_BANK_SUCCESS);				
 			}
 			
 		}
 		catch (NoSuchPaymentFileException e) {
 			SessionErrors.add(
 				    actionRequest,
-				    MessageKeys.PAYMENT_FILE_CONFIRM_CASH_ERROR);			
+				    MessageKeys.PAYMENT_FILE_CONFIRM_BANK_ERROR);			
 		}
 		catch (SystemException e) {
 			SessionErrors.add(
 				    actionRequest,
-				    MessageKeys.PAYMENT_FILE_CONFIRM_CASH_ERROR);
+				    MessageKeys.PAYMENT_FILE_CONFIRM_BANK_ERROR);
 			
 		}
 		catch (PortalException e) {
 			SessionErrors.add(
 				    actionRequest,
-				    MessageKeys.PAYMENT_FILE_CONFIRM_CASH_ERROR);
+				    MessageKeys.PAYMENT_FILE_CONFIRM_BANK_ERROR);
 			
 		}
 
@@ -170,7 +170,7 @@ public class PaymentMgtBackOfficePortlet extends MVCPortlet {
 		    .getLong(actionRequest, "paymentFileId");
 		
 		AccountBean accountBean = AccountUtil
-					    .getAccountBean();
+					    .getAccountBean(actionRequest);
 		File file = null;
 
 		InputStream inputStream = null;
@@ -384,8 +384,47 @@ public class PaymentMgtBackOfficePortlet extends MVCPortlet {
 	    ActionRequest actionRequest, ActionResponse actionResponse) {
 		
 		long paymentFileId = ParamUtil.getLong(actionRequest, "paymentFileId");
-		
+		PaymentFile paymentFile = null;
+		try {
+			paymentFile = PaymentFileLocalServiceUtil.getPaymentFile(paymentFileId);
+			paymentFile.setPaymentStatus(PaymentMgtUtil.PAYMENT_STATUS_CONFIRMED);
+			paymentFile.setPaymentMethod(PaymentMgtUtil.PAYMENT_METHOD_BANK);
+			PaymentFileLocalServiceUtil.updatePaymentFile(paymentFile);
+			addProcessActionSuccessMessage = false;
+			SessionMessages.add(actionRequest, "confirm-payment-cash-success");
+		}
+		catch (PortalException e) {
+			SessionErrors.add(actionRequest, "confirm-payment-cash-error");
+		}
+		catch (SystemException e) {
+			SessionErrors.add(actionRequest, "confirm-payment-cash-error");
+		}
 		
 	}
 
+	/**
+	 * @param actionRequest
+	 * @param actionResponse
+	 */
+	public void updateConfirmPaymentCash(
+	    ActionRequest actionRequest, ActionResponse actionResponse) {
+		
+		long paymentFileId = ParamUtil.getLong(actionRequest, "paymentFileId");
+		PaymentFile paymentFile = null;
+		try {
+			paymentFile = PaymentFileLocalServiceUtil.getPaymentFile(paymentFileId);
+			paymentFile.setPaymentStatus(PaymentMgtUtil.PAYMENT_STATUS_APPROVED);
+			paymentFile.setPaymentMethod(PaymentMgtUtil.PAYMENT_METHOD_CASH);
+			PaymentFileLocalServiceUtil.updatePaymentFile(paymentFile);
+			addProcessActionSuccessMessage = false;
+			SessionMessages.add(actionRequest, "confirm-payment-cash-success");
+		}
+		catch (PortalException e) {
+			SessionErrors.add(actionRequest, "confirm-payment-cash-error");
+		}
+		catch (SystemException e) {
+			SessionErrors.add(actionRequest, "confirm-payment-cash-error");
+		}
+		
+	}
 }

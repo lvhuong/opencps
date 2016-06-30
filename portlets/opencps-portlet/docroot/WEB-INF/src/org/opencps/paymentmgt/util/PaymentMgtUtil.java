@@ -32,10 +32,15 @@ import com.liferay.portal.service.UserLocalServiceUtil;
  */
 public class PaymentMgtUtil {
 	public static final int PAYMENT_STATUS_ON_PROCESSING = 0;
-	public static final int PAYMENT_STATUS_REQUESTED = 1;
-	public static final int PAYMENT_STATUS_CONFIRMED = 2;
-	public static final int PAYMENT_STATUS_APPROVED = 3;
-	public static final int PAYMENT_STATUS_REJECTED = 4;
+	public static final int PAYMENT_STATUS_REQUESTED = 0;
+	public static final int PAYMENT_STATUS_CONFIRMED = 1;
+	public static final int PAYMENT_STATUS_APPROVED = 2;
+	public static final int PAYMENT_STATUS_REJECTED = 3;
+	
+	public static final int PAYMENT_METHOD_CASH = 1;
+	public static final int PAYMENT_METHOD_KEYPAY = 2;
+	public static final int PAYMENT_METHOD_BANK = 3;
+	
 	
 	/**
 	 * @param ownerUserId

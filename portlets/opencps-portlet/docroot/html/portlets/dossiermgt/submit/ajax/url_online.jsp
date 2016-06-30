@@ -22,7 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 %>
-<%@ include file="/init.jsp"%>
+<%@ include file="../init.jsp"%>
 
 <%
 	long serviceInfoId = ParamUtil.getLong(request, "serviceinfoId");
@@ -39,14 +39,22 @@
 		//nothing to do
 	}
 	
-	long frontServicePlid = PortalUtil.getPlidFromPortletId(scopeGroupId, true,  WebKeys.DOSSIER_MGT_PORTLET);
-
+	long frontServicePlid = PortalUtil.getPlidFromPortletId(scopeGroupId, WebKeys.DOSSIER_MGT_PORTLET);
+	long plidSubmit = 0;
+	
+	if(Long.valueOf(plidRes) == 0) {
+		plidSubmit = frontServicePlid;
+	} else {
+		plidSubmit = Long.valueOf(plidRes);
+	}
+	
+	
 %>
 
 <liferay-portlet:renderURL 
 		var="servieOnlinePopURL" 
 		portletName="<%=WebKeys.DOSSIER_MGT_PORTLET %>"
-		plid="<%=frontServicePlid %>"
+		plid="<%=plidSubmit %>"
 		portletMode="VIEW"
 		windowState="<%=LiferayWindowState.NORMAL.toString() %>"
 	>

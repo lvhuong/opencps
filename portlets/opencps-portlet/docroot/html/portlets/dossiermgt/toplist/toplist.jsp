@@ -87,7 +87,7 @@
 			%>
 		
 			<liferay-ui:search-container-column-text 
-				name="row-no" value="<%=String.valueOf(row.getPos()+1) %>"
+				name="row-no" value="<%=dossier.getReceptionNo()%>"
 			/>
 			
 			<liferay-ui:search-container-column-text 

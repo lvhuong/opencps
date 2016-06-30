@@ -30,6 +30,7 @@ import org.opencps.util.DateTimeUtil;
 import org.opencps.util.PortletConstants;
 import org.opencps.util.PortletPropsValues;
 import org.opencps.util.PortletUtil;
+import org.opencps.util.WebKeys;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -40,11 +41,13 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Address;
 import com.liferay.portal.model.Contact;
 import com.liferay.portal.model.EmailAddress;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Phone;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
@@ -55,6 +58,7 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.ContactLocalServiceUtil;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserGroupLocalServiceUtil;
@@ -109,6 +113,16 @@ public class CitizenLocalServiceImpl extends CitizenLocalServiceBaseImpl {
 
 		PortletUtil.SplitName spn = PortletUtil
 		    .splitName(fullName);
+		
+		Role roleDefault = null;
+		
+		try {
+			roleDefault = RoleLocalServiceUtil
+				.getRole(serviceContext.getCompanyId(), WebKeys.CITIZEN_BUSINESS_ROLE_NAME);
+		}
+		catch (Exception e) {
+			_log.info("ROLE CITIZEN IS NULL");
+		}
 
 		boolean autoPassword = true;
 		boolean autoScreenName = true;
@@ -122,6 +136,12 @@ public class CitizenLocalServiceImpl extends CitizenLocalServiceBaseImpl {
 		String password1 = null;
 		String password2 = null;
 		String screenName = null;
+		
+		//add default role
+		if(Validator.isNotNull(roleDefault)) {
+			roleIds = new long[]{roleDefault.getRoleId()};
+		}
+		
 
 		UserGroup userGroup = null;
 		try {

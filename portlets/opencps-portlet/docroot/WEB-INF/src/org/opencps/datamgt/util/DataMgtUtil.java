@@ -135,4 +135,8 @@ public class DataMgtUtil {
 	public static final String TOP_TABS_DICTITEM = "dict-item";
 	public static final String TOP_TABS_DICTCOLLECTION = "dict-collection";
 	public static final String TOP_TABS_DICTVERSION = "dict-version";
+	
+	public static final int ISSUE_STATUS_DRAFTING = 0;
+	public static final int ISSUE_STATUS_INUSE = 1;
+	public static final int ISSUE_STATUS_EXPIRED = 2;	
 }
