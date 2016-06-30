@@ -228,3 +228,5 @@ portlets/LiferayJSONWebservices-portlet/
 portlets/opencps-portlet/*.log
 
 portlets/alpacajs-portlet/
+
+portlets/alpacajs-portlet
