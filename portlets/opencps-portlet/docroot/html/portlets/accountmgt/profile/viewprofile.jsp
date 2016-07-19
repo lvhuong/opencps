@@ -50,8 +50,9 @@
 <%@page import="java.util.List"%>
 <%@page import="com.liferay.portal.service.UserGroupLocalServiceUtil"%>
 <%@page import="com.liferay.portal.model.UserGroup"%>
-<%@page import="org.omg.PortableInterceptor.USER_EXCEPTION"%>
-<%@page import="org.opencps.util.WebKeys"%>
+<%-- <%@page import="org.omg.PortableInterceptor.USER_EXCEPTION"%>
+ --%>
+ <%@page import="org.opencps.util.WebKeys"%>
 <%@ include file="/init.jsp" %>
 
 

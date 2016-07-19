@@ -183,7 +183,7 @@ public class JobPosLocalServiceImpl extends JobPosLocalServiceBaseImpl {
 		jobPos.setLeader(leader);
 
 		role.setName(roleName);
-
+		role.setTitle(roleName);
 		RoleLocalServiceUtil.updateRole(role);
 
 		return jobPosPersistence.update(jobPos);
