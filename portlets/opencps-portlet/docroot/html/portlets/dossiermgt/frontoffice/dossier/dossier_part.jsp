@@ -446,8 +446,11 @@
 												response = JSON.parse(response);
 												
 												if(response.deleted == true){
-													setCookie('dossierId','1');
-													Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.DOSSIER_MGT_PORTLET %>_');
+													var data = {
+														'conserveHash': true
+													};
+													
+													Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.DOSSIER_MGT_PORTLET %>_', data);
 												}else{
 													alert('<%= UnicodeLanguageUtil.get(pageContext, "error-while-remove-this-file") %>');
 												}
@@ -513,7 +516,10 @@
 												response = JSON.parse(response);
 												
 												if(response.deleted == true){
-													Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.DOSSIER_MGT_PORTLET %>_');
+													var data = {
+														'conserveHash': true
+													};
+													Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.DOSSIER_MGT_PORTLET %>_', data);
 												}else{
 													alert('<%= UnicodeLanguageUtil.get(pageContext, "error-while-remove-this-group") %>');
 												}

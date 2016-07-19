@@ -18,6 +18,7 @@
  */
 %>
 
+<%@page import="org.opencps.processmgt.NoSuchWorkflowOutputException"%>
 <%@page import="org.opencps.util.PortletPropsValues"%>
 <%@page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil"%>
 <%@page import="javax.portlet.PortletRequest"%>
@@ -38,6 +39,9 @@
 <%@page import="org.opencps.processmgt.search.ProcessOrderDisplayTerms"%>
 <%@page import="org.opencps.dossiermgt.model.DossierFile"%>
 <%@page import="org.opencps.processmgt.model.ProcessOrder"%>
+<%@page import="org.opencps.dossiermgt.NoSuchDossierTemplateException"%>
+<%@page import="org.opencps.dossiermgt.NoSuchDossierException"%>
+<%@page import="org.opencps.dossiermgt.RequiredDossierPartException"%>
 <%@ include file="../init.jsp"%>
 
 <%
@@ -104,6 +108,19 @@
 	
 %>
 
+<liferay-ui:error 
+	exception="<%= NoSuchDossierException.class %>" 
+	message="<%=NoSuchDossierException.class.getName() %>"
+/>
+<liferay-ui:error 
+	exception="<%= NoSuchWorkflowOutputException.class %>" 
+	message="<%=NoSuchWorkflowOutputException.class.getName() %>"
+/>
+<liferay-ui:error 
+	exception="<%= RequiredDossierPartException.class %>" 
+	message="<%=RequiredDossierPartException.class.getName() %>"
+/>
+
 <portlet:actionURL var="assignToUserURL" name="assignToUser"/>
 
 <aui:form name="fm" action="<%=assignToUserURL.toString() %>" method="post">
@@ -112,6 +129,7 @@
 		value="<%=currentURL %>" 
 		type="hidden"
 	/>
+
 	<aui:input 
 		name="<%=ProcessOrderDisplayTerms.PROCESS_STEP_ID %>" 
 		value="<%=processStepId %>" 
@@ -187,7 +205,7 @@
 			name="<%=ProcessOrderDisplayTerms.PAYMENTVALUE %>" 
 			label="requirement-to-pay-charges" 
 			type="text"
-			value="<%=Validator.isNotNull(processWorkflow.getPaymentFee()) ? PaymentRequestGenerator.getTotalPayment(processWorkflow.getPaymentFee()) : StringPool.BLANK %>"
+			value="<%=Validator.isNotNull(processWorkflow.getPaymentFee()) ? PaymentRequestGenerator.getTotalPayment(processWorkflow.getPaymentFee(), dossierId) : StringPool.BLANK %>"
 		/>
 	</c:if>
 	
@@ -338,7 +356,10 @@
 		var backURL = '<%=backURL%>';
 		var dialog = Liferay.Util.getWindow('<portlet:namespace/>assignToUser');
 		dialog.destroy();
-		Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.PROCESS_ORDER_PORTLET %>_');
+		var data = {
+			'conserveHash': true
+		};
+		Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.PROCESS_ORDER_PORTLET %>_', data);
 	});
 	
 	Liferay.provide(window, '<portlet:namespace/>verifySign', function(e) {
@@ -394,7 +415,7 @@
 
 		//loadingMask.reset();
 		
-		console.log(loadingMask.getAttrs());
+		//console.log(loadingMask.getAttrs());
 
 		loadingMask.show();
 	
@@ -419,7 +440,7 @@
 						        success: function(event, id, obj) {
 									var instance = this;
 									var res = instance.get('responseData');
-									console.log(res);
+									//console.log(res);
 									<portlet:namespace/>signature(res.hashHex, res.resources);
 								},
 						    	error: function(){
@@ -454,15 +475,17 @@
 		        // do something
 		    },
 		    afterSign: function(signer, signature) {
-		    	console.log(signature);
-		        $.ajax({
-			   type: "POST",
-		        url : portletURL.toString(),
-			    async: false,
+		    	//console.log(signature);
+		       $.ajax({
+			   		type: "POST",
+		       		url : portletURL.toString(),
+			   		async: false,
 		            data : {
 		                <portlet:namespace/>signature: signature.value,
 		                <portlet:namespace/>certificate: signature.certificate,
 		                <portlet:namespace/>resources: JSON.stringify(signer.options.document.resources)
+		            },success: function(data){
+		            	console.log(data);
 		            }
 		        });
 		    },

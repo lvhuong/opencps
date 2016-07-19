@@ -149,6 +149,7 @@
 		var dialog = Liferay.Util.Window.getById(dialogId);
 		dialog.destroy();
 		
-		window.location.reload();
+		Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id' + '<portlet:namespace/>');
+		
 	}, [ 'liferay-util-window' ]);
 </aui:script>

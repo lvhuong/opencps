@@ -61,6 +61,8 @@ public class ProcessOrderDisplayTerms extends DisplayTerms {
 	public static String ESTIMATE_DATETIME_YEAR = "estimateDatetimeYear";
 	public static String ESTIMATE_DATETIME = "estimateDatetime";
 	public static String SIGNATURE = "signature";
+	public static String REQUIRED = "required";
+	
 	
 	/**
 	 * @param request

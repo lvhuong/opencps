@@ -18,8 +18,9 @@
  */
 %>
 
-<%@ include file="/init.jsp"%>
 
+<%@page import="org.opencps.dossiermgt.service.DossierLocalServiceUtil"%>
+<%@page import="org.opencps.dossiermgt.model.Dossier"%>
 <%@page import="org.opencps.util.PortletPropsValues"%>
 <%@page import="org.opencps.dossiermgt.model.DossierPart"%>
 <%@page import="org.opencps.dossiermgt.service.DossierPartLocalServiceUtil"%>
@@ -44,11 +45,12 @@
 <%@page import="org.opencps.backend.util.AutoFillFormData"%>
 <%@page import="org.opencps.backend.util.BackendUtils"%>
 
+<%@ include file="/init.jsp"%>
 
 <%
 	boolean success = false;
 
-	boolean isViewForm = GetterUtil.getBoolean(ParamUtil.getBoolean(request, "isViewForm"), false);
+	boolean isViewForm = true;
 
 	try{
 		success = !SessionMessages.isEmpty(renderRequest) && SessionErrors.isEmpty(renderRequest);
@@ -81,6 +83,7 @@
 		dossierFileId = primaryKey;
 	}
 	
+	
 	DossierPart dossierPart = null;
 	
 	if(dossierPartId > 0){
@@ -92,19 +95,44 @@
 		}
 	}
 	
+	Dossier dossier = null;
+	
+	if(dossierId > 0){
+		try{
+			dossier = DossierLocalServiceUtil.getDossier(dossierId);
+		}catch(Exception e){
+			
+		}
+	}
+	
+	
 	AccountBean accBean = AccountUtil.getAccountBean(request);
 	
 	Citizen ownerCitizen = null;
+	
 	Business ownerBusiness = null;
 	
 	if (accBean.isCitizen()) {
 		ownerCitizen = (Citizen) accBean.getAccountInstance();
+		if(dossier != null && (dossier.getDossierStatus().equals(PortletConstants.DOSSIER_STATUS_NEW) || 
+						dossier.getDossierStatus().equals(PortletConstants.DOSSIER_STATUS_WAITING))){
+			isViewForm = false;
+		}
 	} else if (accBean.isBusiness()) {
 		ownerBusiness = (Business) accBean.getAccountInstance();
-	} 
+		if(dossier != null && (dossier.getDossierStatus().equals(PortletConstants.DOSSIER_STATUS_NEW) || 
+						dossier.getDossierStatus().equals(PortletConstants.DOSSIER_STATUS_WAITING))){
+			isViewForm = false;
+		}
+	}else if(accBean.isEmployee()){
+		if(dossierPart.getPartType() != PortletConstants.DOSSIER_PART_TYPE_MULTIPLE_RESULT && 
+						dossierPart.getPartType() != PortletConstants.DOSSIER_PART_TYPE_RESULT){
+			isViewForm = true;
+		}
+	}
 	
 	
-	String formData = AutoFillFormData.dataBinding(sampleData, ownerCitizen, ownerBusiness, dossierId);;
+	String formData = AutoFillFormData.dataBinding(sampleData, ownerCitizen, ownerBusiness, dossierId);
 
 	String alpacaSchema = dossierPart != null && Validator.isNotNull(dossierPart.getFormScript()) ? 
 			dossierPart.getFormScript() : StringPool.BLANK;
@@ -211,8 +239,11 @@
 		var success = '<%=success%>';
 		
 		if(success == 'true'){
-			setCookie('dossierId','1');
-			Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id' + '<portlet:namespace/>');
+			var data = {
+				'conserveHash': true
+			};
+			
+			Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id' + '<portlet:namespace/>', data);
 		}
 	});
 	

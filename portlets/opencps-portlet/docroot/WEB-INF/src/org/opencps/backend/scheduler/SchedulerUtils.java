@@ -82,7 +82,7 @@ public class SchedulerUtils {
 			engineMsg.setActionDatetime(now);
 			engineMsg.setAction(processWorkflow.getActionName());
 			engineMsg.setSignature(0);
-			engineMsg.setPaymentValue(PaymentRequestGenerator.getTotalPayment(processWorkflow.getPaymentFee()));
+			engineMsg.setPaymentValue(PaymentRequestGenerator.getTotalPayment(processWorkflow.getPaymentFee(), dossier.getDossierId()));
 			engineMsg.setEstimateDatetime(now);
 			engineMsg.setReceptionNo(dossier.getReceptionNo());
 			engineMsg.setAssignToUserId(processWorkflow.getActionUserId());

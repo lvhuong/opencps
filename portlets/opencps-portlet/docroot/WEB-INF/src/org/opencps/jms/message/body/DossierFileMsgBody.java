@@ -104,6 +104,16 @@ public class DossierFileMsgBody implements Serializable {
 
 		this._fileGroup = fileGroup;
 	}
+	
+	public DossierPart getFileGroupDossierPart() {
+	
+		return _fileGroupDossierPart;
+	}
+
+	public void setFileGroupDossierPart(DossierPart fileGroupDossierPart) {
+	
+		this._fileGroupDossierPart = fileGroupDossierPart;
+	}
 
 	public void setFileName(String fileName) {
 
@@ -127,6 +137,8 @@ public class DossierFileMsgBody implements Serializable {
 	private DossierPart _dossierPart;
 
 	private FileGroup _fileGroup;
+	
+	private DossierPart _fileGroupDossierPart;
 
 	private String _extension;
 

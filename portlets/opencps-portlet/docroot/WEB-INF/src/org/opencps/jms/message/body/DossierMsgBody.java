@@ -25,6 +25,8 @@ import org.opencps.dossiermgt.model.DossierTemplate;
 import org.opencps.dossiermgt.model.ServiceConfig;
 import org.opencps.servicemgt.model.ServiceInfo;
 
+import com.liferay.portal.service.ServiceContext;
+
 /**
  * @author trungnt
  */
@@ -83,10 +85,25 @@ public class DossierMsgBody implements Serializable {
 		this._serviceInfo = serviceInfo;
 	}
 	
-	private Dossier _dossier;
-	private DossierTemplate _dossierTemplate;
-	private List<DossierFileMsgBody> _lstDossierFileMsgBody;
-	private ServiceConfig _serviceConfig;
-	private ServiceInfo _serviceInfo;
+	public ServiceContext getServiceContext() {
 	
+		return _serviceContext;
+	}
+
+	public void setServiceContext(ServiceContext serviceContext) {
+	
+		this._serviceContext = serviceContext;
+	}
+
+	private Dossier _dossier;
+	
+	private DossierTemplate _dossierTemplate;
+	
+	private List<DossierFileMsgBody> _lstDossierFileMsgBody;
+	
+	private ServiceConfig _serviceConfig;
+	
+	private ServiceInfo _serviceInfo;
+
+	private ServiceContext _serviceContext;
 }

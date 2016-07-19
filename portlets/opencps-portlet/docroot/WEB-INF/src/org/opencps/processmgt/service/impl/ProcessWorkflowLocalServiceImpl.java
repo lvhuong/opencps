@@ -238,6 +238,11 @@ public class ProcessWorkflowLocalServiceImpl
 		return processWorkflowPersistence.findByS_P_ID(
 		    serviceProcessId, start, end);
 	}
+	
+	public List<ProcessWorkflow> getWorkFlowByProcess(long serviceProcessId) 
+					throws SystemException {
+		return processWorkflowPersistence.findByS_P_ID(serviceProcessId);
+	}
 
 	/**
 	 * Count ProcessWorkflow

@@ -17,9 +17,14 @@
 
 package org.opencps.processmgt.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.opencps.processmgt.NoSuchServiceProcessException;
+import org.opencps.processmgt.model.ProcessStep;
+import org.opencps.processmgt.model.ProcessWorkflow;
+import org.opencps.processmgt.model.ServiceInfoProcess;
 import org.opencps.processmgt.model.ServiceProcess;
 import org.opencps.processmgt.service.ServiceProcessLocalServiceUtil;
 import org.opencps.processmgt.service.base.ServiceProcessLocalServiceBaseImpl;
@@ -151,6 +156,37 @@ public class ServiceProcessLocalServiceImpl
 		}
 
 		return serviceProcess;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.opencps.processmgt.service.ServiceProcessLocalService#deleteProcess(long)
+	 */
+	public void deleteProcess(long serviceProcessId) throws NoSuchServiceProcessException, SystemException {
+		List<ProcessStep> processSteps = new ArrayList<ProcessStep>();
+		List<ServiceInfoProcess> infoProcesses = new ArrayList<ServiceInfoProcess>();
+		List<ProcessWorkflow> processWorkflows = new ArrayList<ProcessWorkflow>();
+		
+		try {
+			processSteps = processStepPersistence.findByS_P_ID(serviceProcessId);
+		}
+		catch (Exception e) {
+		}
+		
+		try {
+			infoProcesses = serviceInfoProcessPersistence.findByServiceProcessId(serviceProcessId); 
+		}
+		catch (Exception e) {
+		}
+		
+		try {
+			processWorkflows = processWorkflowPersistence.findByS_P_ID(serviceProcessId);
+		}
+		catch (Exception e) {
+		}
+		
+		if(processSteps.isEmpty() && infoProcesses.isEmpty() && processWorkflows.isEmpty()) {
+			serviceProcessPersistence.remove(serviceProcessId);
+		}
 	}
 
 	public List<ServiceProcess> getServiceProcesses(long groupId, long dossierTemplateId) 

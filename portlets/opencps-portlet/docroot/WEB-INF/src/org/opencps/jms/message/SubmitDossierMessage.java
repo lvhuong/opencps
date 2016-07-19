@@ -22,20 +22,24 @@ import javax.jms.JMSException;
 import javax.naming.NamingException;
 
 import org.opencps.dossiermgt.model.Dossier;
+import org.opencps.jms.SyncServiceContext;
+import org.opencps.jms.business.SubmitDossier;
 import org.opencps.jms.context.JMSContext;
 import org.opencps.jms.message.body.DossierMsgBody;
 import org.opencps.jms.util.JMSMessageBodyUtil;
 import org.opencps.jms.util.JMSMessageUtil;
+import org.opencps.util.WebKeys;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
 /**
  * @author trungnt
  */
 public class SubmitDossierMessage {
 
-	public SubmitDossierMessage(JMSContext context, Dossier dossier) {
+	public SubmitDossierMessage(JMSContext context) {
 
 		this.setContext(context);
 
@@ -47,14 +51,33 @@ public class SubmitDossierMessage {
 		try {
 			BytesMessage bytesMessage =
 				JMSMessageUtil.createByteMessage(_context);
-			DossierMsgBody dossierMsgBody =
-				JMSMessageBodyUtil.getDossierMsgBody(dossierId);
-			byte[] sender =
-				JMSMessageUtil.convertObjectToByteArray(dossierMsgBody);
 
-			bytesMessage.writeBytes(sender);
+			long companyId =
+				GetterUtil.getLong(_context.getProperties().getProperty(
+					WebKeys.JMS_COMPANY_ID));
+			long groupId =
+				GetterUtil.getLong(
+					_context.getProperties().getProperty(WebKeys.JMS_GROUP_ID),
+					0L);
+			long userId =
+				GetterUtil.getLong(
+					_context.getProperties().getProperty(WebKeys.JMS_USER_ID),
+					0L);
 
-			_context.getMessageProducer().send(bytesMessage);
+			if (companyId > 0 && groupId > 0 && userId > 0) {
+				SyncServiceContext syncServiceContext =
+					new SyncServiceContext(
+						companyId, groupId, userId, true, true);
+				DossierMsgBody dossierMsgBody =
+					JMSMessageBodyUtil.getDossierMsgBody(dossierId);
+				dossierMsgBody.setServiceContext(syncServiceContext.getServiceContext());
+				byte[] sender =
+					JMSMessageUtil.convertObjectToByteArray(dossierMsgBody);
+
+				bytesMessage.writeBytes(sender);
+
+				_context.getMessageProducer().send(bytesMessage);
+			}
 
 		}
 		catch (Exception e) {
@@ -76,16 +99,33 @@ public class SubmitDossierMessage {
 		try {
 			BytesMessage bytesMessage =
 				JMSMessageUtil.createByteMessage(_context);
-			DossierMsgBody dossierMsgBody =
-				JMSMessageBodyUtil.getDossierMsgBody(dossier);
-			byte[] sender =
-				JMSMessageUtil.convertObjectToByteArray(dossierMsgBody);
 
-			bytesMessage.writeBytes(sender);
+			long companyId =
+				GetterUtil.getLong(_context.getProperties().getProperty(
+					WebKeys.JMS_COMPANY_ID));
+			long groupId =
+				GetterUtil.getLong(
+					_context.getProperties().getProperty(WebKeys.JMS_GROUP_ID),
+					0L);
+			long userId =
+				GetterUtil.getLong(
+					_context.getProperties().getProperty(WebKeys.JMS_USER_ID),
+					0L);
 
-			_context.getMessageProducer().send(bytesMessage);
+			if (companyId > 0 && groupId > 0 && userId > 0) {
+				SyncServiceContext syncServiceContext =
+					new SyncServiceContext(
+						companyId, groupId, userId, true, true);
+				DossierMsgBody dossierMsgBody =
+					JMSMessageBodyUtil.getDossierMsgBody(dossier);
+				dossierMsgBody.setServiceContext(syncServiceContext.getServiceContext());
+				byte[] sender =
+					JMSMessageUtil.convertObjectToByteArray(dossierMsgBody);
 
-			_context.destroy();
+				bytesMessage.writeBytes(sender);
+
+				_context.getMessageProducer().send(bytesMessage);
+			}
 
 		}
 		catch (Exception e) {
@@ -114,7 +154,12 @@ public class SubmitDossierMessage {
 			Object object = JMSMessageUtil.convertByteArrayToObject(result);
 
 			DossierMsgBody dossierMsgBody = (DossierMsgBody) object;
+
 			setDossierMsgBody(dossierMsgBody);
+
+			SubmitDossier submitDossier = new SubmitDossier();
+
+			submitDossier.syncDossier(dossierMsgBody);
 
 		}
 		catch (Exception e) {
@@ -145,8 +190,22 @@ public class SubmitDossierMessage {
 		this._dossierMsgBody = dossierMsgBody;
 	}
 
+	public SyncServiceContext getServiceContextMsgBody() {
+
+		return _serviceContextMsgBody;
+	}
+
+	public void setServiceContextMsgBody(
+		SyncServiceContext serviceContextMsgBody) {
+
+		this._serviceContextMsgBody = serviceContextMsgBody;
+	}
+
 	private JMSContext _context;
+
 	private DossierMsgBody _dossierMsgBody;
+
+	private SyncServiceContext _serviceContextMsgBody;
 
 	private Log _log =
 		LogFactoryUtil.getLog(SubmitDossierMessage.class.getName());

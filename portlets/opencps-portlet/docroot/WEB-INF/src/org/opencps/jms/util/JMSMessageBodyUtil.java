@@ -79,6 +79,9 @@ public class JMSMessageBodyUtil {
 						FileGroup fileGroup =
 							FileGroupLocalServiceUtil.getFileGroup(dossierFile.getGroupFileId());
 						dossierFileMsgBody.setFileGroup(fileGroup);
+						DossierPart fileGroupDossierPart =
+							DossierPartLocalServiceUtil.getDossierPart(fileGroup.getDossierPartId());
+						dossierFileMsgBody.setFileGroupDossierPart(fileGroupDossierPart);
 					}
 
 					DossierPart dossierPart =
@@ -153,6 +156,9 @@ public class JMSMessageBodyUtil {
 						FileGroup fileGroup =
 							FileGroupLocalServiceUtil.getFileGroup(dossierFile.getGroupFileId());
 						dossierFileMsgBody.setFileGroup(fileGroup);
+						DossierPart fileGroupDossierPart =
+							DossierPartLocalServiceUtil.getDossierPart(fileGroup.getDossierPartId());
+						dossierFileMsgBody.setFileGroupDossierPart(fileGroupDossierPart);
 					}
 
 					DossierPart dossierPart =

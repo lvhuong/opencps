@@ -110,6 +110,9 @@ public class SyncFromFrontOffice implements MessageListener{
 						engineMsg.setDossierId(userActionMgs.getDossierId());
 						engineMsg.setFileGroupId(userActionMgs.getFileGroupId());
 						engineMsg.setEvent(WebKeys.ACTION_SUBMIT_VALUE);
+						engineMsg.setGroupId(userActionMgs.getGroupId());
+						
+						_log.info("-------------------->>>" + userActionMgs.getGroupId());
 
 						msgToEngine.put("msgToEngine", engineMsg);
 

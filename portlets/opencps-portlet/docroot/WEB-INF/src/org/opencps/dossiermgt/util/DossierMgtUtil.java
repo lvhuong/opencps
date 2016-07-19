@@ -1,23 +1,25 @@
 /**
-* OpenCPS is the open source Core Public Services software
-* Copyright (C) 2016-present OpenCPS community
+ * OpenCPS is the open source Core Public Services software
+ * Copyright (C) 2016-present OpenCPS community
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>
-*/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>
+ */
 
 package org.opencps.dossiermgt.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Stack;
@@ -40,10 +42,10 @@ import com.liferay.portal.kernel.util.StringPool;
 public class DossierMgtUtil {
 
 	public static final String TOP_TABS_DOSSIER_TEMPLATE =
-	    "top_tabs_dossier_template";
+		"top_tabs_dossier_template";
 	public static final String TOP_TABS_DOSSIER_PART = "top_tabs_dossier_part";
 	public static final String TOP_TABS_SERVICE_CONFIG =
-	    "top_tabs_service_config";
+		"top_tabs_service_config";
 	public static final String DOSSIER_PART_TOOLBAR = "dossierPartToolBar";
 	public static final String SERVICE_CONFIG_TOOLBAR = "serviceConfigToolBar";
 
@@ -55,38 +57,37 @@ public class DossierMgtUtil {
 	public static final int DOSSIERFILETYPE_OUTPUT = 2;
 	public static final int DOSSIERFILETYPE_ALL = 0;
 
-	public static final String TOP_TABS_DOSSIER_MONITORING_SEARCH = "dossier-monitoring-search";
-	public static final String TOP_TABS_DOSSIER_MONITORING_DOSSIER_FILE_LIST = "dossier-monitoring-dossier-file-list";
-	public static final String TOP_TABS_DOSSIER_MONITORING_SERVICE = "dossier-monitoring-service";
-	
+	public static final String TOP_TABS_DOSSIER_MONITORING_SEARCH =
+		"dossier-monitoring-search";
+	public static final String TOP_TABS_DOSSIER_MONITORING_DOSSIER_FILE_LIST =
+		"dossier-monitoring-dossier-file-list";
+	public static final String TOP_TABS_DOSSIER_MONITORING_SERVICE =
+		"dossier-monitoring-service";
+
 	public static String[] _DOSSIER_CATEGORY_NAMES = {
-	    "update-dossier-info"
+		"update-dossier-info"
 	};
 
-	
 	/**
 	 * @param orderByCol
 	 * @param orderByType
 	 * @return
 	 */
 	public static OrderByComparator getDossierTemplateOrderByComparator(
-	    String orderByCol, String orderByType) {
+		String orderByCol, String orderByType) {
 
 		boolean orderByAsc = false;
 
-		if (orderByType
-		    .equals("asc")) {
+		if (orderByType.equals("asc")) {
 			orderByAsc = true;
 		}
 
 		OrderByComparator orderByComparator = null;
 
-		if (orderByCol
-		    .equals(DossierTemplateDisplayTerms.DOSSIERTEMPLATE_TEMPLATENO)) {
+		if (orderByCol.equals(DossierTemplateDisplayTerms.DOSSIERTEMPLATE_TEMPLATENO)) {
 			orderByComparator = new DossierTemplateNoComparator(orderByAsc);
 		}
-		else if (orderByCol
-		    .equals(DossierTemplateDisplayTerms.DOSSIERTEMPLATE_TEMPLATENAME)) {
+		else if (orderByCol.equals(DossierTemplateDisplayTerms.DOSSIERTEMPLATE_TEMPLATENAME)) {
 			orderByComparator = new DossierTemplateNameComparator(orderByAsc);
 		}
 
@@ -103,61 +104,49 @@ public class DossierMgtUtil {
 		String partTypeName = StringPool.BLANK;
 		switch (partType) {
 		case 1:
-			partTypeName = LanguageUtil
-			    .get(locale, "paper-submited");
+			partTypeName = LanguageUtil.get(locale, "paper-submited");
 			break;
 		case 2:
-			partTypeName = LanguageUtil
-			    .get(locale, "other-papers-group");
+			partTypeName = LanguageUtil.get(locale, "other-papers-group");
 			break;
 		case 3:
-			partTypeName = LanguageUtil
-			    .get(locale, "groups-optional");
+			partTypeName = LanguageUtil.get(locale, "groups-optional");
 			break;
 		case 4:
-			partTypeName = LanguageUtil
-			    .get(locale, "own-records");
+			partTypeName = LanguageUtil.get(locale, "own-records");
 			break;
 		case 5:
-			partTypeName = LanguageUtil
-			    .get(locale, "papers-results");
+			partTypeName = LanguageUtil.get(locale, "papers-results");
 			break;
 		case 6:
-			partTypeName = LanguageUtil
-			    .get(locale, "multy-papers-results");
+			partTypeName = LanguageUtil.get(locale, "multy-papers-results");
 			break;
 		default:
-			partTypeName = LanguageUtil
-			    .get(locale, StringPool.BLANK);
+			partTypeName = LanguageUtil.get(locale, StringPool.BLANK);
 			break;
 		}
 
 		return partTypeName;
 	}
-	
+
 	public static String getSynchStatus(int synchStatus, Locale locale) {
 
 		String synchStatusName = StringPool.BLANK;
 		switch (synchStatus) {
 		case 0:
-			synchStatusName = LanguageUtil
-			    .get(locale, "no-need-to-synch");
+			synchStatusName = LanguageUtil.get(locale, "no-need-to-synch");
 			break;
 		case 1:
-			synchStatusName = LanguageUtil
-			    .get(locale, "need-to-synch");
+			synchStatusName = LanguageUtil.get(locale, "need-to-synch");
 			break;
 		case 2:
-			synchStatusName = LanguageUtil
-			    .get(locale, "synch-success");
+			synchStatusName = LanguageUtil.get(locale, "synch-success");
 			break;
 		case 3:
-			synchStatusName = LanguageUtil
-			    .get(locale, "synch-error");
+			synchStatusName = LanguageUtil.get(locale, "synch-error");
 			break;
 		default:
-			synchStatusName = LanguageUtil
-			    .get(locale, StringPool.BLANK);
+			synchStatusName = LanguageUtil.get(locale, StringPool.BLANK);
 			break;
 		}
 
@@ -174,24 +163,19 @@ public class DossierMgtUtil {
 		String modeName = StringPool.BLANK;
 		switch (mode) {
 		case 0:
-			modeName = LanguageUtil
-			    .get(locale, "inactive");
+			modeName = LanguageUtil.get(locale, "inactive");
 			break;
 		case 1:
-			modeName = LanguageUtil
-			    .get(locale, "front-office");
+			modeName = LanguageUtil.get(locale, "front-office");
 			break;
 		case 2:
-			modeName = LanguageUtil
-			    .get(locale, "back-office");
+			modeName = LanguageUtil.get(locale, "back-office");
 			break;
 		case 3:
-			modeName = LanguageUtil
-			    .get(locale, "front-back-office");
+			modeName = LanguageUtil.get(locale, "front-back-office");
 			break;
 		default:
-			modeName = LanguageUtil
-			    .get(locale, StringPool.BLANK);
+			modeName = LanguageUtil.get(locale, StringPool.BLANK);
 			break;
 		}
 
@@ -209,45 +193,39 @@ public class DossierMgtUtil {
 		Stack<DossierPart> dossierPartsStack = new Stack<DossierPart>();
 
 		try {
-			DossierPart dossierPart = DossierPartLocalServiceUtil
-			    .getDossierPart(dossierpartId);
+			DossierPart dossierPart =
+				DossierPartLocalServiceUtil.getDossierPart(dossierpartId);
 
-			dossierPartsStack
-			    .add(dossierPart);
+			dossierPartsStack.add(dossierPart);
 
 			DossierPart dossierPartIndex = null;
 
-			while (!dossierPartsStack
-			    .isEmpty()) {
-				dossierPartIndex = dossierPartsStack
-				    .pop();
+			while (!dossierPartsStack.isEmpty()) {
+				dossierPartIndex = dossierPartsStack.pop();
 
 				List<DossierPart> dossierPartsChild =
-				    new ArrayList<DossierPart>();
-				dossierPartsChild = DossierPartLocalServiceUtil
-				    .getDossierPartsByParentId(dossierPartIndex
-				        .getDossierpartId());
+					new ArrayList<DossierPart>();
+				dossierPartsChild =
+					DossierPartLocalServiceUtil.getDossierPartsByParentId(dossierPartIndex.getDossierpartId());
 
-				if (!dossierPartsChild
-				    .isEmpty()) {
-					dossierPartsStack
-					    .addAll(dossierPartsChild);
+				if (!dossierPartsChild.isEmpty()) {
+
+					for (int i = dossierPartsChild.size() - 1; i >= 0; i--) {
+						dossierPartsStack.add(dossierPartsChild.get(i));
+					}
+
 				}
 
-				dossierPartsResult
-				    .add(dossierPartIndex);
+				dossierPartsResult.add(dossierPartIndex);
 			}
 			return dossierPartsResult;
 		}
 		catch (Exception e) {
-			_log
-			    .error(e);
+			_log.error(e);
 		}
 
 		return new ArrayList<DossierPart>();
 	}
-
-	private static Log _log = LogFactoryUtil
-				    .getLog(DossierMgtUtil.class
-				        .getName());
+	private static Log _log =
+		LogFactoryUtil.getLog(DossierMgtUtil.class.getName());
 }

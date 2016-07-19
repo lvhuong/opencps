@@ -29,39 +29,42 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.service.ServiceContext;
 
 /**
- * The implementation of the dossier part local service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link org.opencps.dossiermgt.service.DossierPartLocalService} interface.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
+ * The implementation of the dossier part local service. <p> All custom service
+ * methods should be put in this class. Whenever methods are added, rerun
+ * ServiceBuilder to copy their definitions into the
+ * {@link org.opencps.dossiermgt.service.DossierPartLocalService} interface. <p>
+ * This is a local service. Methods of this service will not have security
+ * checks based on the propagated JAAS credentials because this service can only
+ * be accessed from within the same VM. </p>
  *
  * @author trungnt
  * @see org.opencps.dossiermgt.service.base.DossierPartLocalServiceBaseImpl
  * @see org.opencps.dossiermgt.service.DossierPartLocalServiceUtil
  */
-public class DossierPartLocalServiceImpl extends DossierPartLocalServiceBaseImpl {
-	
-	public DossierPart addDossierPart(long dossierTemplateId,String partNo,
-		String partName, String partTip, int partType, long parentId, double sibling,
-		String formScript,String formReport, String sampleData, boolean required,
-		String templateFileNo, long userId, ServiceContext serviceContext) throws SystemException, NoSuchDossierPartException {
-		
-		long dossierPartId = CounterLocalServiceUtil.increment(DossierPart.class.getName());
+public class DossierPartLocalServiceImpl
+	extends DossierPartLocalServiceBaseImpl {
+
+	public DossierPart addDossierPart(
+		long dossierTemplateId, String partNo, String partName, String partTip,
+		int partType, long parentId, double sibling, String formScript,
+		String formReport, String sampleData, boolean required,
+		String templateFileNo, long userId, ServiceContext serviceContext)
+		throws SystemException, NoSuchDossierPartException {
+
+		long dossierPartId =
+			CounterLocalServiceUtil.increment(DossierPart.class.getName());
 		DossierPart dossierPart = dossierPartPersistence.create(dossierPartId);
-		
+
 		String treeIndex = getTreeIndex(parentId, dossierPartId);
-		
+
 		Date currentDate = new Date();
-		
+
 		dossierPart.setUserId(userId);
 		dossierPart.setCompanyId(serviceContext.getCompanyId());
 		dossierPart.setGroupId(serviceContext.getScopeGroupId());
 		dossierPart.setCreateDate(currentDate);
 		dossierPart.setModifiedDate(currentDate);
-		
+
 		dossierPart.setDossierTemplateId(dossierTemplateId);
 		dossierPart.setPartNo(partNo);
 		dossierPart.setPartName(partName);
@@ -75,25 +78,29 @@ public class DossierPartLocalServiceImpl extends DossierPartLocalServiceBaseImpl
 		dossierPart.setRequired(required);
 		dossierPart.setTemplateFileNo(templateFileNo);
 		dossierPart.setTreeIndex(treeIndex);
-		
-		return dossierPartPersistence.update(dossierPart);	
+
+		return dossierPartPersistence.update(dossierPart);
 	}
-	
-	public DossierPart updateDossierPart(long dossierPartId ,long dossierTemplateId,
-		String partNo, String partName, String partTip, int partType, long parentId, double sibling,
-		String formScript,String formReport, String sampleData, boolean required,
-		String templateFileNo, long userId, ServiceContext serviceContext) throws SystemException {
-		
-		DossierPart dossierPart = dossierPartPersistence.fetchByPrimaryKey(dossierPartId);
-		
+
+	public DossierPart updateDossierPart(
+		long dossierPartId, long dossierTemplateId, String partNo,
+		String partName, String partTip, int partType, long parentId,
+		double sibling, String formScript, String formReport,
+		String sampleData, boolean required, String templateFileNo,
+		long userId, ServiceContext serviceContext)
+		throws SystemException {
+
+		DossierPart dossierPart =
+			dossierPartPersistence.fetchByPrimaryKey(dossierPartId);
+
 		Date currentDate = new Date();
-		
+
 		dossierPart.setUserId(userId);
 		dossierPart.setCompanyId(serviceContext.getCompanyId());
 		dossierPart.setGroupId(serviceContext.getScopeGroupId());
 		dossierPart.setCreateDate(currentDate);
 		dossierPart.setModifiedDate(currentDate);
-		
+
 		dossierPart.setDossierTemplateId(dossierTemplateId);
 		dossierPart.setPartName(partName);
 		dossierPart.setPartNo(partNo);
@@ -106,104 +113,132 @@ public class DossierPartLocalServiceImpl extends DossierPartLocalServiceBaseImpl
 		dossierPart.setSampleData(sampleData);
 		dossierPart.setRequired(required);
 		dossierPart.setTemplateFileNo(templateFileNo);
-		
+
 		return dossierPartPersistence.update(dossierPart);
 	}
-	
-	public void deleteDossierPartById(long dossierPartId) throws NoSuchDossierPartException, SystemException {
-		
-		int dossierPartParentCount = dossierPartPersistence.countByParentId(dossierPartId);
-		
-		if(dossierPartParentCount == 0) {
+
+	public void deleteDossierPartById(long dossierPartId)
+		throws NoSuchDossierPartException, SystemException {
+
+		int dossierPartParentCount =
+			dossierPartPersistence.countByParentId(dossierPartId);
+
+		if (dossierPartParentCount == 0) {
 			dossierPartPersistence.remove(dossierPartId);
 		}
 	}
-	
-	public String getTreeIndex(long parentId, long dossierPartId) 
-					throws SystemException, NoSuchDossierPartException {
-		if(parentId == 0) {
+
+	public String getTreeIndex(long parentId, long dossierPartId)
+		throws SystemException, NoSuchDossierPartException {
+
+		if (parentId == 0) {
 			return String.valueOf(dossierPartId);
-		} else if(parentId > 0) {
-			DossierPart dossierPart = dossierPartPersistence.fetchByPrimaryKey(parentId);
-			return dossierPart.getTreeIndex() + StringPool.PERIOD + String.valueOf(dossierPartId);
-		} else {
+		}
+		else if (parentId > 0) {
+			DossierPart dossierPart =
+				dossierPartPersistence.fetchByPrimaryKey(parentId);
+			return dossierPart.getTreeIndex() + StringPool.PERIOD +
+				String.valueOf(dossierPartId);
+		}
+		else {
 			throw new NoSuchDossierPartException();
 		}
 	}
-	
-	public List<DossierPart> getDossierParts(int start, int end, 
-		OrderByComparator orderByComparator) throws SystemException {
+
+	public List<DossierPart> getDossierParts(
+		int start, int end, OrderByComparator orderByComparator)
+		throws SystemException {
+
 		return dossierPartPersistence.findAll(start, end, orderByComparator);
 	}
-	
-	public List<DossierPart> getDossierParts (String partName)
-					throws SystemException {
+
+	public List<DossierPart> getDossierParts(String partName)
+		throws SystemException {
+
 		return dossierPartPersistence.findByPartName(partName);
 	}
-	
-	public int countAll() throws SystemException {
+
+	public int countAll()
+		throws SystemException {
+
 		return dossierPartPersistence.countAll();
 	}
-	
-	public List<DossierPart> getDossierParts (long dossierTemplateId)
-					throws SystemException {
+
+	public List<DossierPart> getDossierParts(long dossierTemplateId)
+		throws SystemException {
+
 		return dossierPartPersistence.findByDossierTemplateId(dossierTemplateId);
-	} 
-	
-	
-	public List<DossierPart> getDossierParts (long dossierTemplateId, int start, int end)
-					throws SystemException {
-		
+	}
+
+	public List<DossierPart> getDossierParts(
+		long dossierTemplateId, int start, int end)
+		throws SystemException {
+
 		boolean orderByAsc = true;
-		
-		DossierPartSiblingComparator 
-			orderComparator = new DossierPartSiblingComparator(orderByAsc);
-		
-		return dossierPartPersistence
-						.findByDossierTemplateId(dossierTemplateId, start, end, orderComparator);
-	} 
-	
-	public List<DossierPart> getDossierPartsByParentId(long parentId) throws SystemException {
+
+		DossierPartSiblingComparator orderComparator =
+			new DossierPartSiblingComparator(orderByAsc);
+
+		return dossierPartPersistence.findByDossierTemplateId(
+			dossierTemplateId, start, end, orderComparator);
+	}
+
+	public List<DossierPart> getDossierPartsByParentId(long parentId)
+		throws SystemException {
+
 		return dossierPartPersistence.findByParentId(parentId);
 	}
-	
-	public int CountByTempalteId(long dossierTemplateId) throws SystemException {
+
+	public int CountByTempalteId(long dossierTemplateId)
+		throws SystemException {
+
 		return dossierPartPersistence.countByDossierTemplateId(dossierTemplateId);
 	}
-	
-	public int CountByParentId(long dossierPartParentId) throws SystemException {
+
+	public int CountByParentId(long dossierPartParentId)
+		throws SystemException {
+
 		return dossierPartPersistence.countByParentId(dossierPartParentId);
 	}
-	
-	public DossierPart getDossierPartByPartNo(String partNo) 
-					throws NoSuchDossierPartException, SystemException {
+
+	public DossierPart getDossierPartByPartNo(String partNo)
+		throws NoSuchDossierPartException, SystemException {
+
 		return dossierPartPersistence.findByPartNo(partNo);
 	}
-	
-	public List<DossierPart> getDossierPartsByT_P(long dossierTemplateId,
-		long parentId) throws SystemException {
+
+	public List<DossierPart> getDossierPartsByT_P(
+		long dossierTemplateId, long parentId)
+		throws SystemException {
+
 		return dossierPartPersistence.findByT_P(dossierTemplateId, parentId);
 	}
-	
-	public List<DossierPart> getDossierPartsByT_P_PT(
-	    long dossierTemplateId, long parentId, int partType)
-	    throws SystemException {
 
-		return dossierPartPersistence
-		    .findByT_P_PT(dossierTemplateId, parentId, partType);
+	public List<DossierPart> getDossierPartsByT_P_PT(
+		long dossierTemplateId, long parentId, int partType)
+		throws SystemException {
+
+		return dossierPartPersistence.findByT_P_PT(
+			dossierTemplateId, parentId, partType);
 	}
-	
-	public DossierPart getDossierPartByT_S(long dossierTemplateId , Double sibling)
-					throws NoSuchDossierPartException, SystemException {
+
+	public DossierPart getDossierPartByT_S(
+		long dossierTemplateId, Double sibling)
+		throws NoSuchDossierPartException, SystemException {
+
 		return dossierPartPersistence.findByT_S(dossierTemplateId, sibling);
 	}
-	public List<DossierPart> getDossierPartsByT_T( 
-		long dossierTemplateId, int partType) throws SystemException {
+
+	public List<DossierPart> getDossierPartsByT_T(
+		long dossierTemplateId, int partType)
+		throws SystemException {
+
 		return dossierPartPersistence.findByT_T(dossierTemplateId, partType);
 	}
-	
-	public DossierPart getDossierPartByT_PN(long templateId, String partNo) 
-					throws NoSuchDossierPartException, SystemException {
+
+	public DossierPart getDossierPartByT_PN(long templateId, String partNo)
+		throws NoSuchDossierPartException, SystemException {
+
 		return dossierPartPersistence.findByT_PN(templateId, partNo);
 	}
 }

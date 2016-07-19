@@ -525,6 +525,7 @@ public class AccountRegPortlet extends MVCPortlet {
 				SessionErrors.add(
 					actionRequest,
 				    MessageKeys.ACCOUNT_SYSTEM_EXCEPTION_OCCURRED);
+				_log.error(e);
 			}
 			if (Validator.isNotNull(currentURL)) {
 				actionResponse.sendRedirect(currentURL);
@@ -556,7 +557,7 @@ public class AccountRegPortlet extends MVCPortlet {
 		if (citizenId == 0 && citizen != null) {
 			throw new DuplicateCitizenEmailException();
 		}
-		if (citizenId > 0 && citizen.getCitizenId() != citizenId) {
+		if (citizenId > 0 && citizen != null && citizen.getCitizenId() != citizenId) {
 			throw new DuplicateCitizenEmailException();
 		}
 
@@ -584,7 +585,8 @@ public class AccountRegPortlet extends MVCPortlet {
 		else if(size > PortletPropsValues.ACCOUNTMGT_FILE_SIZE) {
 			throw new OutOfSizeFileUploadException();
 		}
-		else if(!isFileType(sourceFileName)) {
+		else if(Validator.isNotNull(sourceFileName) && !isFileType(sourceFileName)) {
+			System.out.println("go  hereeeeeeeee");
 			throw new FileTypeFailException();
 		}
 
@@ -660,7 +662,7 @@ public class AccountRegPortlet extends MVCPortlet {
 		else if(size > PortletPropsValues.ACCOUNTMGT_FILE_SIZE) {
 			throw new OutOfSizeFileUploadException();
 		}
-		else if(!isFileType(sourceFileName)) {
+		else if(Validator.isNotNull(sourceFileName) && !isFileType(sourceFileName)) {
 			throw new FileTypeFailException();
 		}
 	}

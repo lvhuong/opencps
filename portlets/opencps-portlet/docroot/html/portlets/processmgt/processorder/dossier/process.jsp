@@ -150,7 +150,17 @@
 	
 	if(dossierTemplate != null){
 		try{
-			dossierPartsLevel1 = DossierPartLocalServiceUtil.getDossierPartsByT_P_PT(dossierTemplate.getDossierTemplateId(), 0, PortletConstants.DOSSIER_PART_TYPE_RESULT);
+			List<DossierPart> lstTmp1 = DossierPartLocalServiceUtil.getDossierPartsByT_P_PT(dossierTemplate.getDossierTemplateId(), 0, PortletConstants.DOSSIER_PART_TYPE_RESULT);
+			if(lstTmp1 != null){
+				dossierPartsLevel1.addAll(lstTmp1);
+			}
+		}catch(Exception e){}
+		
+		try{
+			List<DossierPart> lstTmp2 = DossierPartLocalServiceUtil.getDossierPartsByT_P_PT(dossierTemplate.getDossierTemplateId(), 0, PortletConstants.DOSSIER_PART_TYPE_MULTIPLE_RESULT);
+			if(lstTmp2 != null){
+				dossierPartsLevel1.addAll(lstTmp2);
+			}
 		}catch(Exception e){}
 	}
 	
@@ -610,7 +620,6 @@ AUI().ready('aui-base','liferay-portlet-url','aui-io', function(A){
 												response = JSON.parse(response);
 												
 												if(response.deleted == true){
-													setCookie('dossierId','1');
 													Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.PROCESS_ORDER_PORTLET %>_');
 												}else{
 													alert('<%= UnicodeLanguageUtil.get(pageContext, "error-while-remove-this-group") %>');

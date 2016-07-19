@@ -27,10 +27,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.jms.BytesMessage;
-import javax.jms.ObjectMessage;
-import javax.jms.StreamMessage;
-import javax.jms.TextMessage;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
@@ -93,8 +89,7 @@ import org.opencps.dossiermgt.service.ServiceConfigLocalServiceUtil;
 import org.opencps.dossiermgt.util.DossierMgtUtil;
 import org.opencps.jasperreport.util.JRReportUtil;
 import org.opencps.jms.context.JMSContext;
-import org.opencps.jms.message.body.DossierMsgBody;
-import org.opencps.jms.util.JMSMessageBodyUtil;
+import org.opencps.jms.message.SubmitDossierMessage;
 import org.opencps.jms.util.JMSMessageUtil;
 import org.opencps.processmgt.model.ProcessOrder;
 import org.opencps.processmgt.service.ProcessOrderLocalServiceUtil;
@@ -1962,9 +1957,10 @@ public class DossierMgtFrontOfficePortlet extends MVCPortlet {
 			ParamUtil.getLong(actionRequest,
 				DossierFileDisplayTerms.DOSSIER_FILE_DATE);
 
-		long govAgencyOrganizationId =
-			ParamUtil.getLong(actionRequest,
-				DossierDisplayTerms.GOVAGENCY_ORGANIZATION_ID);
+		/*
+		 * long govAgencyOrganizationId = ParamUtil.getLong(actionRequest,
+		 * DossierDisplayTerms.GOVAGENCY_ORGANIZATION_ID);
+		 */
 
 		String dossierStatus =
 			ParamUtil.getString(actionRequest,
@@ -1972,7 +1968,7 @@ public class DossierMgtFrontOfficePortlet extends MVCPortlet {
 
 		String redirectURL = ParamUtil.getString(actionRequest, "redirectURL");
 
-		Dossier dossier = DossierLocalServiceUtil.getDossier(dossierId);
+		// Dossier dossier = DossierLocalServiceUtil.getDossier(dossierId);
 
 		try {
 			ServiceContext serviceContext =
@@ -1981,6 +1977,7 @@ public class DossierMgtFrontOfficePortlet extends MVCPortlet {
 			UserActionMsg actionMsg = new UserActionMsg();
 
 			Message message = new Message();
+
 			switch (dossierStatus) {
 			case PortletConstants.DOSSIER_STATUS_WAITING:
 
@@ -1994,23 +1991,13 @@ public class DossierMgtFrontOfficePortlet extends MVCPortlet {
 
 				actionMsg.setUserId(serviceContext.getUserId());
 
+				actionMsg.setGroupId(serviceContext.getScopeGroupId());
+
 				ProcessOrder processOrder =
 					ProcessOrderLocalServiceUtil.getProcessOrder(dossierId,
 						fileGroupId);
 
 				actionMsg.setProcessOrderId(processOrder.getProcessOrderId());
-
-				message.put("action", "resubmit");
-				message.put("dossierId", dossierId);
-				message.put("fileGroupId", fileGroupId);
-				message.put("level", PortletConstants.DOSSIER_LOG_NORMAL);
-				message.put("locale", serviceContext.getLocale());
-
-				message.put("groupId", serviceContext.getScopeGroupId());
-
-				message.put("govAgencyOrganizationId", govAgencyOrganizationId);
-
-				message.put("userId", serviceContext.getUserId());
 
 				message.put("msgToEngine", actionMsg);
 
@@ -2029,17 +2016,7 @@ public class DossierMgtFrontOfficePortlet extends MVCPortlet {
 
 				actionMsg.setUserId(serviceContext.getUserId());
 
-				message.put("action", "submit");
-				message.put("dossierId", dossierId);
-				message.put("fileGroupId", fileGroupId);
-				message.put("level", PortletConstants.DOSSIER_LOG_NORMAL);
-				message.put("locale", serviceContext.getLocale());
-
-				message.put("groupId", serviceContext.getScopeGroupId());
-
-				message.put("govAgencyOrganizationId", govAgencyOrganizationId);
-
-				message.put("userId", serviceContext.getUserId());
+				actionMsg.setGroupId(serviceContext.getScopeGroupId());
 
 				message.put("msgToEngine", actionMsg);
 
@@ -2049,26 +2026,17 @@ public class DossierMgtFrontOfficePortlet extends MVCPortlet {
 				break;
 			}
 
-			/*JMSContext context =
-				JMSMessageUtil.createProducer(serviceContext.getCompanyId(),
-					dossier.getGovAgencyCode(), true, "submitDossier");
+			/*
+			 * JMSContext context =
+			 * JMSMessageUtil.createProducer(serviceContext.getCompanyId(),
+			 * dossier.getGovAgencyCode(), true, "submitDossier");
+			 * SubmitDossierMessage submitDossierMessage = new
+			 * SubmitDossierMessage(context);
+			 * submitDossierMessage.sendMessage(dossierId);
+			 */
 
-			BytesMessage bytesMessage =
-				JMSMessageUtil.createByteMessage(context);
-
-			DossierMsgBody dossierMsgBody =
-				JMSMessageBodyUtil.getDossierMsgBody(dossier);
-
-			byte[] sender =
-				JMSMessageUtil.convertObjectToByteArray(dossierMsgBody);
-
-			bytesMessage.writeBytes(sender);
-cps12345
-			context.getMessageProducer().send(bytesMessage);
-
-			context.destroy();*/
-
-			MessageBusUtil.sendMessage("opencps/frontoffice/out/destination",	message);
+			MessageBusUtil.sendMessage("opencps/frontoffice/out/destination",
+				message);
 
 		}
 		catch (Exception e) {
@@ -2701,7 +2669,9 @@ cps12345
 				}
 
 				for (DossierPart dossierPart : dossierParts) {
-					if (dossierPart.getRequired()) {
+					if (dossierPart.getPartType() != PortletConstants.DOSSIER_PART_TYPE_RESULT &&
+						dossierPart.getPartType() != PortletConstants.DOSSIER_PART_TYPE_MULTIPLE_RESULT &&
+						dossierPart.getRequired()) {
 						DossierFile dossierFile = null;
 						try {
 							dossierFile =
@@ -2834,7 +2804,7 @@ cps12345
 			throw new OutOfLengthDossierContactEmailException();
 		}
 	}
-	
+
 	public void TestConsumer(
 		ActionRequest actionRequest, ActionResponse actionResponse) {
 
@@ -2846,43 +2816,33 @@ cps12345
 				JMSMessageUtil.createConsumer(serviceContext.getCompanyId(),
 					"111", true, "submitDossier");
 
-			javax.jms.Message message = context.getMessageConsumer().receive();
+			SubmitDossierMessage submitDossierMessage =
+				new SubmitDossierMessage(context);
+			submitDossierMessage.receiveMessage();
 
-			if (message != null) {
-				if (message instanceof TextMessage) {
-					_log.info("*******************TextMessage*******************");
-					_log.info(((TextMessage) message).getText());
-				}
-				else if (message instanceof ObjectMessage) {
-					_log.info("*******************ObjectMessage*******************");
-					_log.info(((ObjectMessage) message).getClass().getName());
-				}
-				else if (message instanceof BytesMessage) {
-					BytesMessage bytesMessage = (BytesMessage) message;
-
-					_log.info("*******************BytesMessage*******************");
-					_log.info(((BytesMessage) message).getBodyLength());
-
-					byte[] result =
-						new byte[(int) bytesMessage.getBodyLength()];
-
-					bytesMessage.readBytes(result);
-
-					Object object =
-						JMSMessageUtil.convertByteArrayToObject(result);
-
-					DossierMsgBody dossierMsgBody = (DossierMsgBody) object;
-
-				}
-				else if (message instanceof StreamMessage) {
-					_log.info("*******************StreamMessage*******************");
-				}
-			}
-			else {
-				_log.info("*******************Null Message*******************");
-			}
-
-			context.destroy();
+			/*
+			 * javax.jms.Message message =
+			 * context.getMessageConsumer().receive(); if (message != null) { if
+			 * (message instanceof TextMessage) {
+			 * _log.info("*******************TextMessage*******************");
+			 * _log.info(((TextMessage) message).getText()); } else if (message
+			 * instanceof ObjectMessage) {
+			 * _log.info("*******************ObjectMessage*******************");
+			 * _log.info(((ObjectMessage) message).getClass().getName()); } else
+			 * if (message instanceof BytesMessage) { BytesMessage bytesMessage
+			 * = (BytesMessage) message;
+			 * _log.info("*******************BytesMessage*******************");
+			 * _log.info(((BytesMessage) message).getBodyLength()); byte[]
+			 * result = new byte[(int) bytesMessage.getBodyLength()];
+			 * bytesMessage.readBytes(result); Object object =
+			 * JMSMessageUtil.convertByteArrayToObject(result); DossierMsgBody
+			 * dossierMsgBody = (DossierMsgBody) object; } else if (message
+			 * instanceof StreamMessage) {
+			 * _log.info("*******************StreamMessage*******************");
+			 * } } else {
+			 * _log.info("*******************Null Message*******************");
+			 * } context.destroy();
+			 */
 
 		}
 		catch (Exception e) {

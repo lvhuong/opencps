@@ -308,8 +308,10 @@
 	
 
 	Liferay.provide(window, '<portlet:namespace/>closeDialog', function() {
-		setCookie('dossierId','1');
-		Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.DOSSIER_MGT_PORTLET %>_', []);
+		var data = {
+			'conserveHash': true
+		}
+		Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id_<%= WebKeys.DOSSIER_MGT_PORTLET %>_', data);
 		var dialog = Liferay.Util.getWindow('<portlet:namespace/>' + '<%=modalDialogId%>');
 		dialog.destroy(); // You can try toggle/hide whate
 	});

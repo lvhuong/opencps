@@ -76,9 +76,9 @@
 	message="<%=RequiredDossierPartException.class.getName() %>"
 />
 
-<portlet:actionURL var="TestConsumerURL" name="TestConsumer"/>
+<%-- <portlet:actionURL var="TestConsumerURL" name="TestConsumer"/>
 
-<aui:button href="<%= TestConsumerURL.toString()%>" name="TestConsumer" value="TestConsumer"/>
+<aui:button href="<%= TestConsumerURL.toString()%>" name="TestConsumer" value="TestConsumer"/> --%>
 
 <liferay-ui:search-container searchContainer="<%= new DossierSearch(renderRequest, SearchContainer.DEFAULT_DELTA, iteratorURL) %>">
 

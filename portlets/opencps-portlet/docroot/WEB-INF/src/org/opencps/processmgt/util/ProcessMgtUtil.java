@@ -19,6 +19,13 @@ package org.opencps.processmgt.util;
 public class ProcessMgtUtil {
 	public static final String TOP_TABS_DOSSIERLIST = "top_tabs_dossierlist";
 	public static final String TOP_TABS_DOSSIERFILELIST = "top_tabs_dossierfilelist";
+	
+	public static final String DELERR_EXIST_STEP = "step-exist";
+	public static final String DELERR_EXIST_SERVICE_CONFIG = "service-config-exist";
+	public static final String DELERR_EXIST_WORKFLOW = "workflow-exist";
+	
+	public static final String DEL_PROCESS_SUCC = "delete-process-success";
+	
 	public static final String[] _PROCESS_ORDER_CATEGORY_NAMES = {
 		"process-order"
 	};	

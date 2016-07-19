@@ -1,3 +1,4 @@
+<%@page import="org.opencps.processmgt.util.ProcessMgtUtil"%>
 <%@page import="org.opencps.processmgt.permissions.ProcessPermission"%>
 <%@page import="com.liferay.portal.kernel.dao.search.SearchEntry"%>
 <%@page import="org.opencps.processmgt.service.ServiceProcessLocalServiceUtil"%>
@@ -24,6 +25,21 @@
 
 <%@ include file="../init.jsp" %>
 
+<liferay-ui:error 
+	key="<%=ProcessMgtUtil.DELERR_EXIST_SERVICE_CONFIG %>" 
+	message="<%=ProcessMgtUtil.DELERR_EXIST_SERVICE_CONFIG %>" />
+
+<liferay-ui:error 
+	key="<%=ProcessMgtUtil.DELERR_EXIST_STEP %>" 
+	message="<%=ProcessMgtUtil.DELERR_EXIST_STEP %>" />
+
+<liferay-ui:error 
+	key="<%=ProcessMgtUtil.DELERR_EXIST_WORKFLOW %>" 
+	message="<%=ProcessMgtUtil.DELERR_EXIST_WORKFLOW %>" />
+
+<liferay-ui:success 
+	key="<%=ProcessMgtUtil.DEL_PROCESS_SUCC %>" 
+	message="<%=ProcessMgtUtil.DEL_PROCESS_SUCC %>" />
 <liferay-util:include page='<%= templatePath + "toolbar.jsp" %>' servletContext="<%= application %>" />
 
 <%
