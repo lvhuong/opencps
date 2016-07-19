@@ -463,6 +463,7 @@ public class DossierMgtAdminPortlet extends MVCPortlet {
 		String serviceDomainIndex = StringPool.BLANK;
 		String serviceAdministrationIndex = StringPool.BLANK;
 		String govAgencyCode = StringPool.BLANK;
+		String govAgencyIndex = StringPool.BLANK;
 		String govAgencyName = StringPool.BLANK;
 		
 		ServiceInfo serviceInfo = null;
@@ -490,6 +491,7 @@ public class DossierMgtAdminPortlet extends MVCPortlet {
 			dictItemGov = DictItemLocalServiceUtil.getDictItem(govAgencyCodeId);
 			govAgencyCode = dictItemGov.getItemCode();
 			govAgencyName = dictItemGov.getItemName(serviceContext.getLocale(), true);
+			govAgencyIndex = dictItemGov.getTreeIndex();
 		}
 		catch (Exception e) {
 			// TODO: handle exception
@@ -505,7 +507,7 @@ public class DossierMgtAdminPortlet extends MVCPortlet {
 					dossierTemplateId, govAgencyCode, govAgencyName, 
 					serviceLevel, String.valueOf(domainCode), serviceContext.getUserId(), serviceInstruction, 
 					servicePortal, serviceOnegate, serviceBackoffice, 
-					serviceCitizen, serviceBusinees, serviceContext);
+					serviceCitizen, serviceBusinees,govAgencyIndex, serviceContext);
 			}
 			else {
 				ServiceConfigLocalServiceUtil.updateServiceConfig(serviceConfigId, 
@@ -513,7 +515,7 @@ public class DossierMgtAdminPortlet extends MVCPortlet {
 					dossierTemplateId, govAgencyCode, govAgencyName, serviceLevel,
 					String.valueOf(domainCode), serviceContext.getUserId(), serviceInstruction, servicePortal, 
 					serviceOnegate, serviceBackoffice, serviceCitizen,
-					serviceBusinees, serviceContext);
+					serviceBusinees, govAgencyIndex, serviceContext);
 			
 			if(Validator.isNotNull(backURL)) {
 				actionResponse.sendRedirect(backURL);

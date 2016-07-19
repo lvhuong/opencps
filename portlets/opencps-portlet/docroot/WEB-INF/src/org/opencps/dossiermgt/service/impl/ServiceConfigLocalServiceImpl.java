@@ -76,7 +76,7 @@ public class ServiceConfigLocalServiceImpl
 		String govAgencyName, int serviceLevel, String domainCode, long userId,
 		String serviceInstruction, boolean servicePortal,
 		boolean serviceOnegate, boolean serviceBackoffice,
-		boolean serviceCitizen, boolean serviceBusinees,
+		boolean serviceCitizen, boolean serviceBusinees, String govAgencyIndex,
 		ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
@@ -145,7 +145,9 @@ public class ServiceConfigLocalServiceImpl
 		serviceConfig
 			.setGovAgencyName(govAgencyName);
 		serviceConfig
-			.setServiceLevel(serviceLevel);;
+			.setServiceLevel(serviceLevel);
+		serviceConfig
+			.setGovAgencyIndex(govAgencyIndex);
 		if (isBackOffice) {
 			serviceConfig
 				.setGovAgencyOrganizationId(workingUnit
@@ -461,7 +463,7 @@ public class ServiceConfigLocalServiceImpl
 		int serviceLevel, String domainCode, long userId,
 		String serviceInstruction, boolean servicePortal,
 		boolean serviceOnegate, boolean serviceBackoffice,
-		boolean serviceCitizen, boolean serviceBusinees,
+		boolean serviceCitizen, boolean serviceBusinees, String govAgencyIndex,
 		ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
@@ -526,7 +528,9 @@ public class ServiceConfigLocalServiceImpl
 		serviceConfig
 			.setGovAgencyName(govAgencyName);
 		serviceConfig
-			.setServiceLevel(serviceLevel);;
+			.setServiceLevel(serviceLevel);
+		serviceConfig
+			.setGovAgencyIndex(govAgencyIndex);
 		if (isBackOffice) {
 			serviceConfig
 				.setGovAgencyOrganizationId(workingUnit
