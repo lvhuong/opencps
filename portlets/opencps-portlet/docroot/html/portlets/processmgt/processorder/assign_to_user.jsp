@@ -205,7 +205,7 @@
 			name="<%=ProcessOrderDisplayTerms.PAYMENTVALUE %>" 
 			label="requirement-to-pay-charges" 
 			type="text"
-			value="<%=Validator.isNotNull(processWorkflow.getPaymentFee()) ? PaymentRequestGenerator.getTotalPayment(processWorkflow.getPaymentFee()) : StringPool.BLANK %>"
+			value="<%=Validator.isNotNull(processWorkflow.getPaymentFee()) ? PaymentRequestGenerator.getTotalPayment(processWorkflow.getPaymentFee(), dossierId) : StringPool.BLANK %>"
 		/>
 	</c:if>
 	
