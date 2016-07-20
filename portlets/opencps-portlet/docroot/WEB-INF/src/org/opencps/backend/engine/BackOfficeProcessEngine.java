@@ -285,7 +285,7 @@ public class BackOfficeProcessEngine implements MessageListener {
 				if (processWorkflow.getRequestPayment()) {
 
 					int totalPayment =
-					    PaymentRequestGenerator.getTotalPayment(processWorkflow.getPaymentFee());
+					    PaymentRequestGenerator.getTotalPayment(processWorkflow.getPaymentFee(), dossier.getDossierId());
 
 					List<String> paymentMethods =
 					    PaymentRequestGenerator.getPaymentMethod(processWorkflow.getPaymentFee());

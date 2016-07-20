@@ -18,8 +18,21 @@
 package org.opencps.backend.util;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.opencps.util.PaymentFeeUtil;
+
+import com.liferay.portal.kernel.json.JSONException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -52,6 +65,44 @@ public class PaymentRequestGenerator {
 	    }
     }
 	
+	/**
+	 * @param pattern
+	 * @return
+	 * @throws JSONException 
+	 */
+	public static int getTotalPayment(String pattern, long dossierId) throws JSONException {
+
+		int total = 0;
+
+		if (_validatorPattern(pattern)) {
+			
+			int net = 0;
+			
+			 Pattern patternName = Pattern.compile("net=\\[(.*?)\\]");
+			 
+		     Matcher matcherName = patternName.matcher(pattern);
+		     
+		     if(matcherName.find())
+		     {
+		    	 
+		    	 net = PaymentFeeUtil.getTotalDossierPayment(patternName, matcherName, pattern, dossierId);
+		        	
+		     }else{
+		    	 
+		    	 net = _getAmount(pattern, PAY_AMOUNT_NET);
+		    	 
+		     }
+			
+
+			int ship = _getAmount(pattern, PAY_AMOUNT_SHIP);
+
+			int tax = _getAmount(pattern, PAY_AMOUNT_TAX);
+
+			total = net + ship + tax;
+		}
+
+		return total;
+	}
 	/**
 	 * @param pattern
 	 * @return
