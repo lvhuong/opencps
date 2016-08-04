@@ -70,6 +70,7 @@ public class SyncFromBackOffice implements MessageListener{
 			        toBackOffice.getDossierStatus(),
 			        toBackOffice.getReceptionNo(),
 			        toBackOffice.getEstimateDatetime(),
+			        toBackOffice.getSubmitDateTime(),
 			        toBackOffice.getReceiveDatetime(),
 			        toBackOffice.getFinishDatetime(), actor,
 			        toBackOffice.getRequestCommand(),
@@ -84,7 +85,7 @@ public class SyncFromBackOffice implements MessageListener{
 			    workflowOutputs);
 		}
 		catch (Exception e) {
-			
+			_log.error(e);
 		}
 
 		SendToCallbackMsg toCallBack = new SendToCallbackMsg();
@@ -100,6 +101,10 @@ public class SyncFromBackOffice implements MessageListener{
 		    "opencps/backoffice/engine/callback", sendToCallBack);
 	}    
     
+    /**
+     * @param requestComand
+     * @return
+     */
     private String _getActor(String requestComand) {
     	
     	String actor = WebKeys.ACTOR_ACTION_SYSTEM;
