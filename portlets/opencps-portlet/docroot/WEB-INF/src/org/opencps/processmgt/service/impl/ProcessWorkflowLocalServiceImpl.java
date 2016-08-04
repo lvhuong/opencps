@@ -288,4 +288,28 @@ public class ProcessWorkflowLocalServiceImpl
 	    throws PortalException, SystemException {
 		return processWorkflowFinder.findInShcheduler(preProcessStep, serviceProcessId);
 	}
+	
+	/**
+	 * 
+	 * @param actionCode
+	 * @return
+	 * @throws PortalException
+	 * @throws SystemException
+	 */
+	public ProcessWorkflow getByActionCode(String actionCode) throws PortalException, SystemException {
+		return processWorkflowPersistence.fetchByActionCode(actionCode);
+	}
+	
+	/**
+	 * 
+	 * @param serviceProcessId
+	 * @param preProcessStepId
+	 * @param actionName
+	 * @return
+	 * @throws PortalException
+	 * @throws SystemException
+	 */
+	public ProcessWorkflow getByS_PreP_AN(long serviceProcessId, long preProcessStepId, String actionName) throws PortalException, SystemException {
+		return processWorkflowPersistence.fetchByS_PreP_AN(serviceProcessId, preProcessStepId, actionName);
+}	
 }

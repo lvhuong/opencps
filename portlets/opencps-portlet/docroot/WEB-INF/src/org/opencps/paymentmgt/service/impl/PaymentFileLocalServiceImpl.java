@@ -265,4 +265,15 @@ public class PaymentFileLocalServiceImpl extends PaymentFileLocalServiceBaseImpl
 	public List<PaymentFile> getPaymentFileByD_(long dossierId) throws SystemException {
 		return paymentFilePersistence.findByD_(dossierId);
 	}
+
+	@Override
+	public PaymentFile syncPaymentFile(String oid, String typeUpdate,
+			int paymentStatus, int paymentMethod, String approveNote,
+			byte[] bytes, long folderId, String sourceFileName,
+			String mimeType, String title, String description,
+			String changeLog, ServiceContext serviceContext)
+			throws PortalException, SystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

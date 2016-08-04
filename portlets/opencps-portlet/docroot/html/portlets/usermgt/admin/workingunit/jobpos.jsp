@@ -96,6 +96,7 @@
 			uri : url
 		});
 	});
+	
 </aui:script>
 
 <aui:script>
@@ -105,7 +106,6 @@
 		// Closing the dialog
 		var dialog = Liferay.Util.Window.getById(dialogId);
 		dialog.destroy();
-		
 		Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id' + '<portlet:namespace/>');
 	}, [ 'liferay-util-window','aui-dialog','aui-dialog-iframe' ]);
 </aui:script>

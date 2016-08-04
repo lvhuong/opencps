@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.opencps.usermgt.NoSuchJobPosException;
 import org.opencps.usermgt.NoSuchWorkingUnitException;
 import org.opencps.usermgt.model.Employee;
 import org.opencps.usermgt.model.JobPos;
@@ -258,7 +259,12 @@ public class JobPosLocalServiceImpl extends JobPosLocalServiceBaseImpl {
 		return jobPosPersistence.findByG_W_D(groupId, workingUnitId,
 				directWorkingUnitId);
 	}
-
+	
+	public JobPos getJobPosByTitle(long groupId, String title) 
+					throws NoSuchJobPosException, SystemException {
+		return jobPosPersistence.findByTitle(groupId, title);
+	}
+	
 	private WorkingUnit getDirectWorkingUnitId(long parentWorkingUnitId)
 			throws NoSuchWorkingUnitException, SystemException {
 		WorkingUnit workingUnit = workingUnitPersistence

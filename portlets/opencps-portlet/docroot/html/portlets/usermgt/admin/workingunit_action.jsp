@@ -31,6 +31,7 @@
 		(ResultRow) request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 	WorkingUnit workingUnit = (WorkingUnit)row.getObject();
 	String redirectURL = currentURL;
+	
 %>
 
 <%-- <liferay-ui:icon-menu> --%>

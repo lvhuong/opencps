@@ -57,7 +57,7 @@
 						
 				int domainCode = ParamUtil.getInteger(request, DossierDisplayTerms.SERVICE_DOMAIN_CODE, 0);
 				
-				String dossierStatus = ParamUtil.getString(request, DossierDisplayTerms.DOSSIER_STATUS, StringPool.BLANK);	
+				String dossierStatus = ParamUtil.getString(request, "dossierStatusValue", StringPool.BLANK);	
 				
 				request.setAttribute(DossierDisplayTerms.SERVICE_DOMAIN_CODE, domainCode);
 				request.setAttribute(DossierDisplayTerms.DOSSIER_STATUS, dossierStatus);
@@ -104,7 +104,7 @@
 										</aui:select>						
 									</aui:col>
 									<aui:col width="30">
-										<aui:select label="" name="<%= DossierDisplayTerms.DOSSIER_STATUS %>" style="width: 100%;">
+										<aui:select label="" name="dossierStatusValue" style="width: 100%;">
 											<aui:option value="-1">
 												<liferay-ui:message key="filter-by-dossier-status"></liferay-ui:message>
 											</aui:option>

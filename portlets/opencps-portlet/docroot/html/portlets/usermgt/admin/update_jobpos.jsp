@@ -108,18 +108,33 @@
 		if(btnChooseCancel) {
 			btnChooseCancel.on('click', function() {
 				Liferay.Util.getOpener().<portlet:namespace/>closePopup('<portlet:namespace/>dialog');
+				
+				var data = {
+						'conserveHash': true
+					};
+					
+					Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id' + '<portlet:namespace/>', data);
+				
+				
+				
 			});
 		}
 		
 		if(btnChoose) {
 			btnChoose.on('click',function(){
 				var r = confirm(message);
+				
 				if(r == true) {
 					<portlet:namespace/>submitItemForm();
 				} else {
 					Liferay.Util.getOpener().<portlet:namespace/>closePopup('<portlet:namespace/>dialog');
 				}
 				
+				var data = {
+						'conserveHash': true
+					};
+					
+					Liferay.Util.getOpener().Liferay.Portlet.refresh('#p_p_id' + '<portlet:namespace/>', data);
 			});
 		}
 	});
@@ -127,12 +142,14 @@
     Liferay.provide(window,'<portlet:namespace/>submitItemForm',
          function() {
           var A = AUI();
+          
           A.io.request('<%=editJobPosURL %>',{
               method: 'POST',
               form: { id: '<portlet:namespace />fm2' },
               on: {
                   success: function(){
                 	  Liferay.Util.getOpener().<portlet:namespace/>closePopup('<portlet:namespace/>dialog');
+                	 
                 	  
                   }
              }

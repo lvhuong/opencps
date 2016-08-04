@@ -246,12 +246,15 @@ public class UserMgtPortlet extends MVCPortlet {
 		    .getString(actionRequest, JobPosDisplayTerms.TITLE_JOBPOS);
 		String returnURL = ParamUtil
 		    .getString(actionRequest, "returnURL");
+		
 		SessionMessages
 		    .add(actionRequest, PortalUtil
 		        .getPortletId(actionRequest) +
 		        SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
+		
 		ServiceContext serviceContext = ServiceContextFactory
 		    .getInstance(actionRequest);
+		
 		JobPos jobPos = null;
 		if (jobPosId > 0) {
 			jobPos = JobPosLocalServiceUtil
@@ -701,8 +704,8 @@ public class UserMgtPortlet extends MVCPortlet {
 			    .add(actionRequest, MessageKeys.USERMGT_JOBPOS_UPDATE_SUCESS);
 			if (Validator
 			    .isNotNull(redirectURL)) {
-				actionResponse
-				    .sendRedirect(redirectURL);
+				System.out.println("redirectURL " + redirectURL);
+				actionResponse.sendRedirect(redirectURL);
 			}
 		}
 		catch (Exception e) {

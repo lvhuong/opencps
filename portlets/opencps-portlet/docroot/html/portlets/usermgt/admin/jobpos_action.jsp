@@ -45,8 +45,14 @@
 	</portlet:renderURL>
 	<c:if test="<%=JobPosPermission.contains(permissionChecker, scopeGroupId, ActionKeys.UPDATE) %>">
 		<liferay-ui:icon cssClass="edit" image="edit" message="edit"
-		url="#" 
+		url="javascript:void();" 
+		
 		onClick="<%= \"javascript:\" + renderResponse.getNamespace() + \"showPopup('\" + updateJobPos +\"');\" %>" />
+		
+		<aui:button 
+	
+	onClick="<%= \"javascript:\" + renderResponse.getNamespace() + \"showPopup('\" + updateJobPos +\"');\" %>"
+	/>
 	</c:if>
 
 	<portlet:actionURL var="deleteJobPosURL" name="deleteJobPos">
@@ -73,5 +79,7 @@
 			title : '',
 			uri : url
 		});
+		
+		
 	});
 </aui:script>

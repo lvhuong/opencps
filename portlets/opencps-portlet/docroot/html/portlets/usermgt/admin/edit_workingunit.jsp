@@ -133,7 +133,7 @@
 </liferay-util:buffer>
 
 <liferay-util:buffer var="htmlBot">
-
+<%=categorySections[0][0]%>
 </liferay-util:buffer>
 
 <aui:form name="fm" 

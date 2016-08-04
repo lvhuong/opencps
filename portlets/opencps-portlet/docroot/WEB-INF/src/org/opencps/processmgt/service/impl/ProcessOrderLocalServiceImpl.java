@@ -699,4 +699,14 @@ public class ProcessOrderLocalServiceImpl
 			.update(processOrder);
 
 	}
+	
+	/**
+	 * @param serviceinfoId
+	 * @return
+	 * @throws SystemException
+	 */
+	public List<ProcessOrder> getProcessOrdersByServiceInfoId(long serviceinfoId) 
+					throws SystemException {
+		return processOrderPersistence.findByServiceInfoId(serviceinfoId);
+	}
 }

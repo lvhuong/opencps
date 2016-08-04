@@ -45,16 +45,21 @@
 />
 
 <%
+	String dossierStatus = 	ParamUtil.getString(request, "dossierStatusValue");
+	
 	String backURL = ParamUtil.getString(request, "backURL");
 	User mappingUser = (User)request.getAttribute(WebKeys.USER_MAPPING_ENTRY);
+	
 	PortletURL iteratorURL = renderResponse.createRenderURL();
 	iteratorURL.setParameter("mvcPath", templatePath + "backofficedossierlist.jsp");
 	iteratorURL.setParameter("tab1", ProcessMgtUtil.TOP_TABS_DOSSIERLIST);
+	iteratorURL.setParameter("dossierStatusValue", dossierStatus);
+	
 	
 	String domainCode = ParamUtil.getString(request, DossierDisplayTerms.SERVICE_DOMAIN_CODE);
-	String dossierStatus = 	ParamUtil.getString(request, DossierDisplayTerms.DOSSIER_STATUS);
+	
 	request.setAttribute(DossierDisplayTerms.SERVICE_DOMAIN_CODE, domainCode);
-	request.setAttribute(DossierDisplayTerms.DOSSIER_STATUS, dossierStatus);
+	/* request.setAttribute(DossierDisplayTerms.DOSSIER_STATUS, dossierStatus); */
 	
 	List<String> headerNames = new ArrayList<String>();
 	
@@ -80,6 +85,7 @@
 						
 			total =  DossierLocalServiceUtil.countDossierByKeywordDomainAndStatus(scopeGroupId, searchTerms.getKeywords(), 
 					domainCode, dossierStatus);
+			System.out.print("AAA:" + total);
 
 			results = DossierLocalServiceUtil.searchDossierByKeywordDomainAndStatus(scopeGroupId, searchTerms.getKeywords(), 
 					domainCode, dossierStatus, searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator());
@@ -89,7 +95,7 @@
 		%>
 		
 	</liferay-ui:search-container-results>
-
+	<% out.print("ABC" + total); %>
 	<liferay-ui:search-container-row 
 		className="org.opencps.dossiermgt.model.Dossier" 
 		modelVar="dossier" 

@@ -77,4 +77,5 @@
 			uri : url
 		});
 	});
+	
 </aui:script>
